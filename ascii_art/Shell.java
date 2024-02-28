@@ -1,32 +1,66 @@
 package ascii_art;
 
+import ascii_output.ConsoleAsciiOutput;
+import ascii_output.HtmlAsciiOutput;
+import image.Image;
+
+import java.io.IOException;
+
 public class Shell {
+
+    private static final String ADD_COMMAND = "add";
+    private static final String OUTPUT_COMMAND = "output";
+    private static final String EXIT = "exit";
+    private static final String CHARS_COMMAND = "chars";
+    private static final String REMOVE_COMMAND = "remove";
+    private static final String RES_COMMAND = "res";
+    private static final String IMAGE_COMMAND = "image";
+    private static final String ASCII_ART_COMMAND = "asciiArt";
+    private static final String DID_NOT_EXECUTE_DUE_TO_INCORRECT_COMMAND = "Did not execute due to incorrect command.";
+    private static final String SPACE = " ";
 
     private int resolution = 128;
     private boolean printingToConsole = true;
     private final char[] defaultCharacters = {'0','1','2','3','4','5','6','7','8','9'};
-    private final String defaultImagePath = "cat.jpeg";
+    private Image image;
 
 
     private AsciiArtAlgorithm algorithm;
+
+    /**
+     * default constructor
+     */
+    public Shell() {
+        try {
+            image = new Image("C:\\Users\\t9092556\\IdeaProjects\\oopEx3\\ascii_art\\cat.jpeg");
+        }
+        catch (IOException e){
+            System.out.println(e.getMessage());
+        }
+        algorithm = new AsciiArtAlgorithm(resolution, image, defaultCharacters); // Todo update me
+    }
+
+    public static void main(String[] args){
+        Shell shell = new Shell();
+        shell.run();
+    }
     /**
      * main function of the program
      */
     public void run(){
-        algorithm = new AsciiArtAlgorithm(0); // Todo update me
 
         boolean exitFlag = false;
         while (!exitFlag){
             String userInput = requestInput();
-            String[] wordsInUserInput = userInput.split(" ");
+            String[] wordsInUserInput = userInput.split(SPACE);
             switch (wordsInUserInput[0]){
-                case "exit":
+                case EXIT:
                     exitFlag = true;
                     break;
-                case "chars":
+                case CHARS_COMMAND:
                     handleCharsCommand(wordsInUserInput);
                     break;
-                case "add":
+                case ADD_COMMAND:
                     try {
                         handleAddCommand(wordsInUserInput);
                     }
@@ -34,7 +68,7 @@ public class Shell {
                         System.out.println(e.getMessage());
                     }
                     break;
-                case "remove":
+                case REMOVE_COMMAND:
                     try {
                         handleRemoveCommand(wordsInUserInput);
                     }
@@ -42,7 +76,7 @@ public class Shell {
                         System.out.println(e.getMessage());
                     }
                     break;
-                case "res":
+                case RES_COMMAND:
                     try{
                         handleResCommand(wordsInUserInput);
                     }
@@ -50,7 +84,7 @@ public class Shell {
                         System.out.println(e.getMessage());
                     }
                     break;
-                case "image":
+                case IMAGE_COMMAND:
                     try{
                         handleImageCommand(wordsInUserInput);
                     }
@@ -58,14 +92,14 @@ public class Shell {
                         System.out.println(e.getMessage());
                     }
                     break;
-                case "output":
+                case OUTPUT_COMMAND:
                     try {
                         handleOutputCommand(wordsInUserInput);
                     } catch (InvalidUserInputException e) {
                         System.out.println(e.getMessage());
                     }
                     break;
-                case "asciiArt":
+                case ASCII_ART_COMMAND:
                     try {
                         handleRunCommand(wordsInUserInput);
                     } catch (InvalidUserInputException e) {
@@ -73,14 +107,14 @@ public class Shell {
                     }
                     break;
                 default:
-                    System.out.println("Did not execute due to incorrect command.");
+                    System.out.println(DID_NOT_EXECUTE_DUE_TO_INCORRECT_COMMAND);
                     break;
             }
         }
     }
 
     private String requestInput(){
-        System.out.println(">>>");
+        System.out.print(">>> ");
         String userInput = KeyboardInput.readLine();
         return userInput;
     }
@@ -113,8 +147,10 @@ public class Shell {
         if (userInput.length != 2){
             throw new InvalidUserInputException("Did not execute due to problem with image file.");
         }
-        if (!algorithm.setNewImage(userInput[1]))
-        {
+        try{
+            image = new Image(userInput[1]);
+        }
+        catch (IOException e){
             throw new InvalidUserInputException("Did not execute due to problem with image file.");
         }
     }
@@ -239,11 +275,19 @@ public class Shell {
         }
 
         if (userInput[1].equals("up")){
-            if (!algorithm.updateRes()){
+            if (2*resolution <= image.getWidth()){
+                algorithm.setResolution(2*resolution);
+                resolution *= 2;
+            }
+            else{
                 System.out.println("Did not change resolution due to exceeding boundaries.");
             }
         } else if (userInput[1].equals("down")){
-            if (!algorithm.updateRes()){
+            if (resolution/2 >= Math.max(1f,(float)image.getWidth()/image.getHeight())){
+                algorithm.setResolution(resolution/2);
+                resolution /= 2;
+            }
+            else{
                 System.out.println("Did not change resolution due to exceeding boundaries.");
             }
         } else{
@@ -256,7 +300,17 @@ public class Shell {
             throw new InvalidUserInputException("Did not execute. Charset is empty.");
         }
 
-        algorithm.run();
+        char[][] returnedImage = algorithm.run();
+
+        if (printingToConsole){
+            // print to console
+            ConsoleAsciiOutput output = new ConsoleAsciiOutput();
+            output.out(returnedImage);
+        } else {
+            // print to html
+            HtmlAsciiOutput output = new HtmlAsciiOutput("C:\\Users\\t9092556\\IdeaProjects\\oopEx3\\ascii_art\\out.html", "Courier New");
+            output.out(returnedImage);
+        }
     }
 
     private class InvalidUserInputException extends Exception{

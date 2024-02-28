@@ -28,7 +28,7 @@ public class ImageSuitability {
      * @param resolution    which resolution to separates with
      * @throws IOException exception return
      */
-    public ImageSuitability(Image originalImage, int resolution) throws IOException {
+    public ImageSuitability(Image originalImage, int resolution) {
         image = createImageRightSizes(originalImage);
         this.resolution = resolution;
         numImagesCol = image.getHeight() / (image.getWidth() / resolution);
@@ -43,7 +43,7 @@ public class ImageSuitability {
 
     public void setResolution(int newResolution){
         if (newResolution != resolution){
-            resolution*=newResolution;
+            resolution=newResolution;
             numImagesCol = image.getHeight() / (image.getWidth() / resolution);
             sizeSquare = image.getWidth() / resolution;
         }
@@ -103,8 +103,9 @@ public class ImageSuitability {
         Color[][] pixelArray = new Color[width][height];
         fillingPixelArray(pixelArray,
                 originalImage,
-                width - originalImage.getWidth(),
-                height - originalImage.getHeight());
+                height - originalImage.getHeight(),
+                width - originalImage.getWidth()
+                );
         return new Image(pixelArray, width, height);
     }
 
@@ -122,7 +123,7 @@ public class ImageSuitability {
         }
         for (int row = diffRow / 2; row < pixelArray.length - diffRow / 2; row++) {
             for (int col = diffCol / 2; col < pixelArray[row].length - diffCol / 2; col++) {
-                pixelArray[row][col] = originalImage.getPixel(row, col);
+                pixelArray[row][col] = originalImage.getPixel(row-diffRow/2,col-diffCol/2);
             }
         }
     }

@@ -23,7 +23,7 @@ public class AsciiArtAlgorithm {
      *
      * @param resolution number of sum-images in each row
      */
-    public AsciiArtAlgorithm(int resolution, Image image, char[] charSet) throws IOException {
+    public AsciiArtAlgorithm(int resolution, Image image, char[] charSet) {
         this.imageSuitability = new ImageSuitability(image, resolution);
         this.subImgCharMatcher = new SubImgCharMatcher(charSet);
         this.resolution = resolution;
@@ -36,7 +36,7 @@ public class AsciiArtAlgorithm {
      *
      * @return char array representing image
      */
-    public char[][] run() throws IOException {
+    public char[][] run() {
         imageSuitability = new ImageSuitability(image, resolution);
         imageSuitability.setResolution(resolution);
         char[][] letters = new char[imageSuitability.getresolution()][imageSuitability.getnumImagesCol()];
