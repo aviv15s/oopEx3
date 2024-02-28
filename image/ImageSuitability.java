@@ -4,16 +4,21 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.Arrays;
 
+import static java.lang.Math.max;
+
 /**
  * class that contains array of subPhotos object to help us not calculate
  * for the same partition on the same photo twice.
  */
 public class ImageSuitability {
     private static final Color DEFAULT_COLOR = Color.WHITE;
-    private SubPhoto[][] arraySubPhoto;
-    private final int sizeSquare;
-    private final int numPhotosRow;
-    private final int numPhotosCol;
+    private static final int  MAX_RGB = 255;
+    private Image image;
+    private double[][] greyColors;
+    private double[][] greyLevelsSubImages;
+    private int sizeSquare;
+    private int resolution;
+    private int numImagesCol;
 
     /**
      * Constructor that get image and resolution and pad the photo seperates to
@@ -24,17 +29,62 @@ public class ImageSuitability {
      * @throws IOException exception return
      */
     public ImageSuitability(Image originalImage, int resolution) throws IOException {
-        Image image = setImageRightSizes(originalImage);
-        numPhotosRow = resolution;
-        numPhotosCol = image.getHeight() / (image.getWidth() / resolution);
+        image = createImageRightSizes(originalImage);
+        this.resolution = resolution;
+        numImagesCol = image.getHeight() / (image.getWidth() / resolution);
         sizeSquare = image.getWidth() / resolution;
-        arraySubPhoto = new SubPhoto[numPhotosRow][numPhotosCol];
-        for (int indexRow = 0; indexRow < numPhotosRow; indexRow++) {
-            for (int indexCol = 0; indexCol < numPhotosCol; indexCol++) {
-                arraySubPhoto[indexRow][indexCol] = new SubPhoto(image,
-                        sizeSquare,
-                        indexRow * sizeSquare,
-                        indexCol * sizeSquare);
+        greyColors = new double[image.getWidth()][image.getHeight()];
+        setGreyColors();
+        greyLevelsSubImages = new double[resolution][numImagesCol];
+        setGreyColors();
+
+    }
+
+
+    public void setResolution(int newResolution){
+        if (newResolution != resolution){
+            resolution*=newResolution;
+            numImagesCol = image.getHeight() / (image.getWidth() / resolution);
+            sizeSquare = image.getWidth() / resolution;
+        }
+        setGreyLevelsSubImages();
+        
+    }
+
+    public void setImage(String imageName) throws IOException {
+        Image imageOriginal = new Image(imageName);
+        image = createImageRightSizes(imageOriginal);
+        setGreyColors();
+        setGreyLevelsSubImages();
+    }
+
+    private void setGreyLevelsSubImages(){
+        for (int indexRow = 0; indexRow < resolution; indexRow++) {
+            for (int indexCol = 0; indexCol < numImagesCol; indexCol++) {
+                greyLevelsSubImages[indexRow][indexCol] = greyLevelCalculatorSubImage(indexRow,indexCol);
+            }
+        }
+    }
+    private double greyLevelCalculatorSubImage(int indexRow, int indexCol){
+        double sum = 0;
+        for (int row = 0; row < sizeSquare; row++){
+            for (int col = 0; col < sizeSquare; col++){
+                sum += greyColors[row+indexRow*sizeSquare][col+indexCol*sizeSquare];
+            }
+        }
+        return sum/(MAX_RGB* sizeSquare*sizeSquare);
+    }
+
+    /**
+     *
+     */
+    private void setGreyColors(){
+        for (int row = 0; row < image.getWidth(); row++){
+            for (int col = 0 ; col < image.getHeight(); col++){
+                Color currentPixel = image.getPixel(row,col);
+                greyColors[row][col] = currentPixel.getRed()*0.2126 +
+                        currentPixel.getGreen()*0.7152 +
+                        currentPixel.getBlue()*0.0722;
             }
         }
     }
@@ -46,7 +96,7 @@ public class ImageSuitability {
      * @return image in right sizes.
      * @throws IOException
      */
-    public static Image setImageRightSizes(Image originalImage) throws IOException {
+    public static Image createImageRightSizes(Image originalImage){
         int[] sizes = rightSizes(originalImage.getWidth(), originalImage.getHeight());
         int width = sizes[0];
         int height = sizes[1];
@@ -99,13 +149,6 @@ public class ImageSuitability {
         return rightSizes;
     }
 
-    /**
-     * get arraySubPhoto
-     * @return arraySubPhoto
-     */
-    public SubPhoto[][] getArraySubPhoto() {
-        return arraySubPhoto;
-    }
 
     /**
      * get sizeSquare
@@ -116,18 +159,18 @@ public class ImageSuitability {
     }
 
     /**
-     * get numPhotosRow
-     * @return numPhotosRow
+     * get resolution
+     * @return resolution
      */
-    public int getNumPhotosRow() {
-        return numPhotosRow;
+    public int getresolution() {
+        return resolution;
     }
 
     /**
-     * get numPhotosCol
-     * @return numPhotosCol
+     * get numImagesCol
+     * @return numImagesCol
      */
-    public int getNumPhotosCol() {
-        return numPhotosCol;
+    public int getnumImagesCol() {
+        return numImagesCol;
     }
 }
