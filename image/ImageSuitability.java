@@ -7,8 +7,7 @@ import java.util.Arrays;
 import static java.lang.Math.max;
 
 /**
- * class that contains array of subPhotos object to help us not calculate
- * for the same partition on the same photo twice.
+ * class that helps us control on the grey object comfortably.
  */
 public class ImageSuitability {
     private static final int  MAX_RGB = 255;
@@ -33,7 +32,13 @@ public class ImageSuitability {
         setGreyLevelsSubImages();
 
     }
-
+    /**
+     * Sets a new resolution for the ImageSuitability instance.
+     * If the new resolution differs from the current one, it recalculates the sizeSquare,
+     * numImagesCol, and updates the greyLevelsSubImages array accordingly.
+     *
+     * @param newResolution The new resolution to be set.
+     */
     public void setResolution(int newResolution){
         if (newResolution != resolution){
             resolution = newResolution;
@@ -43,7 +48,11 @@ public class ImageSuitability {
         greyLevelsSubImages = new double[resolution][numImagesCol];
         setGreyLevelsSubImages();
     }
-    
+    /**
+     * Populates the greyLevelsSubImages array by calculating the grey levels for each subimage.
+     * This method iterates through the subimage grid and uses the greyLevelCalculatorSubImage method
+     * to determine the grey level for each subimage and stores the result in the corresponding array element.
+     */
     private void setGreyLevelsSubImages(){
         for (int indexRow = 0; indexRow < resolution; indexRow++) {
             for (int indexCol = 0; indexCol < numImagesCol; indexCol++) {
@@ -51,6 +60,13 @@ public class ImageSuitability {
             }
         }
     }
+
+    /**
+     * calculate for specific subImage the greyness
+     * @param indexRow row to start from
+     * @param indexCol col to look from
+     * @returngreness of that subImage
+     */
     private double greyLevelCalculatorSubImage(int indexRow, int indexCol){
         double sum = 0;
         for (int row = 0; row < sizeSquare; row++){
