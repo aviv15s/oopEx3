@@ -4,8 +4,9 @@ import java.util.HashMap;
 
 
 /**
- * שתהיה אחראית להתאים תו ASCII לתת תמונה עם בהירות נתונה. מחלקה זו תשמש את אלגוריתם
- * אומנות ה-ASCII שלנו בהמשך כדי להחליף תתי תמונות בתווים.
+ * Class that calculates the brightness values of each character and assigns a charachter
+ * to a given brightness level
+ * @author aviv.shemesh, ram_3108
  */
 public class SubImgCharMatcher {
     private final boolean WHITE_PIXEL = true;
@@ -56,9 +57,7 @@ public class SubImgCharMatcher {
                 }
             }
         }
-
         return (float) numberOfWhitePixels / numberOfPixels;
-
     }
 
     /**
