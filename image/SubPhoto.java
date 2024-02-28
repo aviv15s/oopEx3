@@ -8,14 +8,26 @@ public class SubPhoto {
     private double  greyLevel;
 
 
-
+    /**
+     * construct a subPhoto object
+     * @param image to get from
+     * @param size size of subphoto
+     * @param startRow row to start looking from the color
+     * @param startCol col to start looking from the color
+     */
     public SubPhoto(Image image,int size,int startRow,int startCol) {
         pixelGreyArray = new double[size][size];
         changeToGrey(image, size, startRow, startCol);
         setGreyLevel();
     }
 
-
+    /**
+     * calculate greyness of each pixel in pixelGreyArray the grey level
+     * @param image to look from
+     * @param size size to look in col and row
+     * @param startRow row to start looking from
+     * @param startCol col to start looking from
+     */
     private void changeToGrey(Image image,int size, int startRow,int startCol){
         for (int row = startRow; row < startRow+size; row++){
             for (int col = startCol; col < startCol+size; col++){

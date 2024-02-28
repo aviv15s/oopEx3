@@ -37,11 +37,9 @@ public class AsciiArtAlgorithm {
             Image image = new Image(imageName);
             ImageSuitability imageSuitability = new ImageSuitability(image,resolution);
             SubPhoto[][] subPhotoArray = imageSuitability.getArraySubPhoto();
-            char[][] letters = new char[imageSuitability.numPhotosRow][imageSuitability.numPhotosCol];
-            for(int indexRow = 0; indexRow<imageSuitability.numPhotosRow; indexRow++){
-                for (int indexCol = 0; indexCol<imageSuitability.numPhotosCol; indexCol++){
-                    char a = subImgCharMatcher.getCharByImageBrightness(
-                            subPhotoArray[indexRow][indexCol].getGreyLevel());
+            char[][] letters = new char[imageSuitability.getNumPhotosRow()][imageSuitability.getNumPhotosCol()];
+            for(int indexRow = 0; indexRow<imageSuitability.getNumPhotosRow(); indexRow++){
+                for (int indexCol = 0; indexCol<imageSuitability.getNumPhotosCol(); indexCol++){
                     letters[indexRow][indexCol] =
                             subImgCharMatcher.getCharByImageBrightness(
                                     subPhotoArray[indexRow][indexCol].getGreyLevel());
