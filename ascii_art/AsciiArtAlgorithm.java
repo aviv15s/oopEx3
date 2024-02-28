@@ -71,23 +71,27 @@ public class AsciiArtAlgorithm {
         imageSuitability.setResolution(resolution);
     }
 
-    public void setCharSet(char[] charSet) {
-        this.charSet = charSet;
-        subImgCharMatcher = new SubImgCharMatcher(charSet);
+    public void addChar(char letter) {
+        subImgCharMatcher.addChar(letter);
     }
-    //    public static void main(String[] args) {
-//        int resolution = 2;
-//        char[] charSet =new char[]{'m','o'};
-//        String name = "examples/board.jpeg";
-//        try:
-//            AsciiArtAlgorithm asciiArtAlgorithm = new AsciiArtAlgorithm(resolution, name, charSet);
-//        catch{
-//        System.out.println(asciiArtAlgorithm.run()[0][1]);
-//    }
-//}
-
-
+    public void removeChar(char letter){
+        subImgCharMatcher.removeChar(letter);
+    }
+    public static void main(String[] args) {
+        int resolution = 2;
+        char[] charSet =new char[]{'m','o'};
+        String name = "examples/board.jpeg";
+        try {
+            AsciiArtAlgorithm asciiArtAlgorithm = new AsciiArtAlgorithm(resolution, name, charSet);
+        }
+        catch (IOException ioException) {
+            System.out.println(1);
+        }
+    }
 }
+
+
+
 
 
 
