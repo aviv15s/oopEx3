@@ -29,6 +29,9 @@ public class ImageSuitability {
     public ImageSuitability(Image originalImage, int resolution) {
         greyImage = PaddingGreyImage.setgreyImage(PaddingGreyImage.createImageRightSizes(originalImage));
         this.resolution = resolution;
+        this.sizeSquare = greyImage.length / resolution;
+        this.numImagesCol = greyImage[0].length / sizeSquare;
+
         greyLevelsSubImages = new double[resolution][numImagesCol];
         setGreyLevelsSubImages();
 
@@ -100,13 +103,13 @@ public class ImageSuitability {
         }
 
 
-        private static void fillingPixelArray(Color[][] pixelArray, Image originalImage, int diffRow, int diffCol) {
+        private static void fillingPixelArray(Color[][] pixelArray, Image originalImage, int diffCol, int diffRow) {
             for (Color[] e : pixelArray) {
                 Arrays.fill(e, DEFAULT_COLOR);
             }
             for (int row = diffRow / 2; row < pixelArray.length - diffRow / 2; row++) {
                 for (int col = diffCol / 2; col < pixelArray[row].length - diffCol / 2; col++) {
-                    pixelArray[row][col] = originalImage.getPixel(row, col);
+                    pixelArray[row][col] = originalImage.getPixel(row-diffRow/2, col-diffCol/2);
                 }
             }
         }
