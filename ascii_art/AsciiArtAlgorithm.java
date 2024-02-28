@@ -15,7 +15,7 @@ public class AsciiArtAlgorithm {
     private ImageSuitability imageSuitability;
     private SubImgCharMatcher subImgCharMatcher;
     private int resolution;
-    private String imageName;
+    private Image image;
     private char[] charSet;
 
     /**
@@ -23,11 +23,11 @@ public class AsciiArtAlgorithm {
      *
      * @param resolution number of sum-images in each row
      */
-    public AsciiArtAlgorithm(int resolution, String imageName, char[] charSet) throws IOException {
-        this.imageSuitability = new ImageSuitability(new Image(imageName), resolution);
+    public AsciiArtAlgorithm(int resolution, Image image, char[] charSet) throws IOException {
+        this.imageSuitability = new ImageSuitability(image, resolution);
         this.subImgCharMatcher = new SubImgCharMatcher(charSet);
         this.resolution = resolution;
-        this.imageName = imageName;
+        this.image = image;
         this.charSet = charSet;
     }
 
@@ -36,9 +36,7 @@ public class AsciiArtAlgorithm {
      *
      * @return char array representing image
      */
-    public char[][] run() throws IOException {
-        imageSuitability = new ImageSuitability(new Image(imageName), resolution);
-        subImgCharMatcher = new SubImgCharMatcher(charSet);
+    public char[][] run(){
         char[][] letters = new char[imageSuitability.getresolution()][imageSuitability.getnumImagesCol()];
         double[][] greyLevelsSubImages = imageSuitability.getGreyLevelsSubImages();
         for (int indexRow = 0; indexRow < imageSuitability.getresolution(); indexRow++) {
@@ -49,8 +47,8 @@ public class AsciiArtAlgorithm {
         }
         return letters;
     }
-    public String getImageName() {
-        return imageName;
+    public Image getImage() {
+        return image;
     }
 
     public int getResolution() {
@@ -61,9 +59,9 @@ public class AsciiArtAlgorithm {
         return charSet;
     }
 
-    public void setImageName(String imageName) throws IOException {
-        this.imageName = imageName;
-        imageSuitability = new ImageSuitability(new Image(imageName), resolution);
+    public void setImage(Image image) throws IOException {
+        this.image = image;
+        imageSuitability = new ImageSuitability(image, resolution);
     }
 
     public void setResolution(int resolution) {
@@ -82,7 +80,7 @@ public class AsciiArtAlgorithm {
         char[] charSet =new char[]{'m','o'};
         String name = "examples/board.jpeg";
         try {
-            AsciiArtAlgorithm asciiArtAlgorithm = new AsciiArtAlgorithm(resolution, name, charSet);
+            AsciiArtAlgorithm asciiArtAlgorithm = new AsciiArtAlgorithm(resolution, new Image(name), charSet);
         }
         catch (IOException ioException) {
             System.out.println(1);
