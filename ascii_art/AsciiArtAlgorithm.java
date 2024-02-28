@@ -3,10 +3,8 @@ package ascii_art;
 import ascii_output.AsciiOutput;
 
 /**
- * מחלקה זו תהיה אחראית על הרצת
- * האלגוריתם. הפרמטרים עבור ריצת האלגוריתם יתקבלו בבנאי של המחלקה. הריצה תהיה תלויה כמובן
- * בתמונה שנבחרה, ברזולוציה שנבחרה )כמה תווים יהיו בשורה בתוצאה(, וכן בסט התווים שנבחר. הדרך
- * שבה נתונים אלו יתורגמו לפרמטרים של המחלקה תלוי במימוש שלכם לחלקים הקודמים
+ * Class responsible on running the algorithm.
+ * Obviously depends on the image given, resolution, char option.
  */
 public class AsciiArtAlgorithm {
 
@@ -23,8 +21,8 @@ public class AsciiArtAlgorithm {
      * runs the algorithm and returns the char array
      * @return char array representing image
      */
-    public char [][] run(){
-
-    }
+//    public char [][] run(){
+//
+//    }
 
 }
