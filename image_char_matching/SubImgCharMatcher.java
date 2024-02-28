@@ -4,12 +4,13 @@ import java.util.HashMap;
 
 
 /**
- * שתהיה אחראית להתאים תו ASCII לתת תמונה עם בהירות נתונה. מחלקה זו תשמש את אלגוריתם
- * אומנות ה-ASCII שלנו בהמשך כדי להחליף תתי תמונות בתווים.
+ * Class that calculates the brightness values of each character and assigns a charachter
+ * to a given brightness level
+ * @author aviv.shemesh, ram_3108
  */
 public class SubImgCharMatcher {
     private final boolean WHITE_PIXEL = true;
-    private HashMap<Character, Float> charSet;
+    private final HashMap<Character, Float> charSet;
     private float maxUnnormalizedBrightness;
     private float minUnnormalizedBrightness;
 
@@ -41,8 +42,8 @@ public class SubImgCharMatcher {
 
     /**
      * used to calculate the brightness of a single charachter
-     * @param c
-     * @return
+     * @param c character
+     * @return brightness value
      */
     private float calculateCharBrightness(char c){
         boolean[][] pixelArray = CharConverter.convertToBoolArray(c);
@@ -56,9 +57,7 @@ public class SubImgCharMatcher {
                 }
             }
         }
-
         return (float) numberOfWhitePixels / numberOfPixels;
-
     }
 
     /**
