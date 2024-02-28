@@ -1,10 +1,7 @@
 package ascii_art;
-
 import image.Image;
 import image.ImageSuitability;
 import image_char_matching.SubImgCharMatcher;
-
-import java.io.IOException;
 import java.util.Set;
 
 /**
@@ -50,22 +47,24 @@ public class AsciiArtAlgorithm {
     public Set<Character> getCharSet() {
         return subImgCharMatcher.getCharSet();
     }
-
+    public void setImage(Image image){
+        this.imageSuitability = new ImageSuitability(image, imageSuitability.getresolution());
+    }
     public void setResolution(int resolution) {
         setResolution(resolution);
     }
 
-    public static void main(String[] args) {
-        int resolution = 2;
-        char[] charSet =new char[]{'m','o'};
-        String name = "examples/board.jpeg";
-        try {
-            AsciiArtAlgorithm asciiArtAlgorithm = new AsciiArtAlgorithm(resolution, new Image(name), charSet);
-        }
-        catch (IOException ioException) {
-            System.out.println(1);
-        }
-    }
+//    public static void main(String[] args) {
+//        int resolution = 2;
+//        char[] charSet =new char[]{'m','o'};
+//        String name = "examples/board.jpeg";
+//        try {
+//            AsciiArtAlgorithm asciiArtAlgorithm = new AsciiArtAlgorithm(resolution, new Image(name), charSet);
+//        }
+//        catch (IOException ioException) {
+//            System.out.println(1);
+//        }
+//    }
 }
 
 
