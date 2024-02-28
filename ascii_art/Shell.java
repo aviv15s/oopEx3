@@ -2,15 +2,17 @@ package ascii_art;
 
 public class Shell {
 
+    private int resolution = 128;
+    private boolean printingToConsole = true;
+    private final char[] defaultCharacters = {'0','1','2','3','4','5','6','7','8','9'};
+    private final String defaultImagePath = "cat.jpeg";
+
+
     private AsciiArtAlgorithm algorithm;
     /**
      * main function of the program
      */
     public void run(){
-        String defaultImagePath = "cat.jpeg";
-        int defaultResolution = 128;
-        char[] defaultCharacters = {'0','1','2','3','4','5','6','7','8','9'};
-        boolean defaultScreenAsOutput = true;
         algorithm = new AsciiArtAlgorithm(0); // Todo update me
 
         boolean exitFlag = false;
@@ -49,21 +51,29 @@ public class Shell {
                     }
                     break;
                 case "image":
-                    // receives as input "image board.png"
-                    // if the image couldn't be loaded prints: "Did not execute due to problem with image file."
-                    // Image constructor throws IOException
+                    try{
+                        handleImageCommand(wordsInUserInput);
+                    }
+                    catch (InvalidUserInputException e){
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case "output":
-                    // "output html" prints to html file out.html with font Courier New.
-                    // "output console" print to terminal
-                    // any other input is incorrect and should print "Did not change output method due to incorrect format."
+                    try {
+                        handleOutputCommand(wordsInUserInput);
+                    } catch (InvalidUserInputException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case "asciiArt":
-                    // in case of using empty charSet prints: "Did not execute. Charset is empty."
+                    try {
+                        handleRunCommand(wordsInUserInput);
+                    } catch (InvalidUserInputException e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 default:
-                    // Should be reached if input is invalid command
-                    // prints "Did not execute due to incorrect command."
+                    System.out.println("Did not execute due to incorrect command.");
                     break;
             }
         }
@@ -73,6 +83,40 @@ public class Shell {
         System.out.println(">>>");
         String userInput = KeyboardInput.readLine();
         return userInput;
+    }
+
+    /**
+     * changes the output of the algorithm
+     * @param userInput the command the user inputted
+     * @throws InvalidUserInputException in case of wrong use of command
+     */
+    private void handleOutputCommand(String[] userInput) throws InvalidUserInputException{
+        if (userInput.length != 2){
+            throw new InvalidUserInputException("Did not change output method due to incorrect format.");
+        }
+
+        if (userInput[1].equals("html")){
+            printingToConsole = false;
+        } else if (userInput[1].equals("console")) {
+            printingToConsole = true;
+        } else {
+            throw new InvalidUserInputException("Did not change output method due to incorrect format.");
+        }
+    }
+
+    /**
+     * loads a new image file to the algorithm
+     * @param userInput
+     * @throws InvalidUserInputException if the image file is invalid and doesent load correctly
+     */
+    private void handleImageCommand(String[] userInput) throws InvalidUserInputException{
+        if (userInput.length != 2){
+            throw new InvalidUserInputException("Did not execute due to problem with image file.");
+        }
+        if (!algorithm.setNewImage(userInput[1]))
+        {
+            throw new InvalidUserInputException("Did not execute due to problem with image file.");
+        }
     }
 
     /**
@@ -205,6 +249,14 @@ public class Shell {
         } else{
             throw new InvalidUserInputException("Did not change resolution due to incorrect format.");
         }
+    }
+
+    private void handleRunCommand(String[] userInput) throws InvalidUserInputException{
+        if (algorithm.getCharSet().length == 0){
+            throw new InvalidUserInputException("Did not execute. Charset is empty.");
+        }
+
+        algorithm.run();
     }
 
     private class InvalidUserInputException extends Exception{
