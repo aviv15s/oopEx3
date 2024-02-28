@@ -1,4 +1,4 @@
-package ascii_output;
+package src.ascii_output;
 
 /**
  * Output a 2D array of chars to the console.

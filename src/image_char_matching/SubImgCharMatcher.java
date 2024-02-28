@@ -1,4 +1,4 @@
-package image_char_matching;
+package src.image_char_matching;
 
 import java.util.HashMap;
 import java.util.Set;
@@ -87,6 +87,9 @@ public class SubImgCharMatcher {
      * @param c char
      */
     public void addChar(char c){
+        if (charSet.containsKey(c)){
+            return;
+        }
         float charBrightness = calculateCharBrightness(c);
 
         // check if needs to re-normalize all characters
@@ -115,6 +118,9 @@ public class SubImgCharMatcher {
      * @param c char
      */
     public void removeChar(char c){
+        if (!charSet.containsKey(c)){
+            return;
+        }
         double charBrightness = charSet.get(c);
         charSet.remove(c);
 

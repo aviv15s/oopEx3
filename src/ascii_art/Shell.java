@@ -1,14 +1,16 @@
-package ascii_art;
+package src.ascii_art;
 
-import ascii_output.ConsoleAsciiOutput;
-import ascii_output.HtmlAsciiOutput;
-import image.Image;
+import src.ascii_output.ConsoleAsciiOutput;
+import src.ascii_output.HtmlAsciiOutput;
+import src.image.Image;
+import src.image_char_matching.SubImgCharMatcher;
 
 import java.io.IOException;
 import java.util.Set;
 
 public class Shell {
 
+    public static final String DID_NOT_CHANGE_RESOLUTION_DUE_TO_EXCEEDING_BOUNDARIES = "Did not change resolution due to exceeding boundaries.";
     private static final String ADD_COMMAND = "add";
     private static final String OUTPUT_COMMAND = "output";
     private static final String EXIT = "exit";
@@ -19,6 +21,9 @@ public class Shell {
     private static final String ASCII_ART_COMMAND = "asciiArt";
     private static final String DID_NOT_EXECUTE_DUE_TO_INCORRECT_COMMAND = "Did not execute due to incorrect command.";
     private static final String SPACE = " ";
+    public static final String UP = "up";
+    public static final String DOWN = "down";
+    public static final String DID_NOT_CHANGE_RESOLUTION_DUE_TO_INCORRECT_FORMAT = "Did not change resolution due to incorrect format.";
 
     private int resolution = 128;
     private boolean printingToConsole = true;
@@ -27,18 +32,20 @@ public class Shell {
 
 
     private AsciiArtAlgorithm algorithm;
+    private SubImgCharMatcher subImgCharMatcher;
 
     /**
      * default constructor
      */
     public Shell() {
         try {
-            image = new Image("C:\\Users\\t9092556\\IdeaProjects\\oopEx3\\ascii_art\\cat.jpeg");
+            image = new Image("cat.jpeg");
         }
         catch (IOException e){
             System.out.println(e.getMessage());
         }
-        algorithm = new AsciiArtAlgorithm(resolution, image, defaultCharacters); // Todo update me
+        subImgCharMatcher = new SubImgCharMatcher(defaultCharacters);
+        algorithm = new AsciiArtAlgorithm(resolution, image, subImgCharMatcher); // Todo update me
     }
 
     public static void main(String[] args){
@@ -140,19 +147,20 @@ public class Shell {
     }
 
     /**
-     * loads a new image file to the algorithm
+     * loads a new src.image file to the algorithm
      * @param userInput
-     * @throws InvalidUserInputException if the image file is invalid and doesent load correctly
+     * @throws InvalidUserInputException if the src.image file is invalid and doesent load correctly
      */
     private void handleImageCommand(String[] userInput) throws InvalidUserInputException{
         if (userInput.length != 2){
-            throw new InvalidUserInputException("Did not execute due to problem with image file.");
+            throw new InvalidUserInputException("Did not execute due to problem with src.image file.");
         }
         try{
             image = new Image(userInput[1]);
+            algorithm = new AsciiArtAlgorithm(algorithm.getResolution(), image, subImgCharMatcher);
         }
         catch (IOException e){
-            throw new InvalidUserInputException("Did not execute due to problem with image file.");
+            throw new InvalidUserInputException("Did not execute due to problem with src.image file.");
         }
     }
 
@@ -161,7 +169,7 @@ public class Shell {
      * @param userInput
      */
     private void handleCharsCommand(String[] userInput){
-        Set<Character> characters = algorithm.getCharSet();
+        Set<Character> characters = subImgCharMatcher.getCharSet();
         boolean[] isCharInSet = new boolean[128];
         for (Character c: characters){
             isCharInSet[(int)c] = true;
@@ -190,22 +198,22 @@ public class Shell {
 
         switch (action){
             case "all":
-                for (int i = 32; i < 126; i++) {
-                    algorithm.removeChar((char)i);
+                for (int i = 32; i <= 126; i++) {
+                    subImgCharMatcher.removeChar((char)i);
                 }
                 break;
             case "space":
-                algorithm.removeChar(' ');
+                subImgCharMatcher.removeChar(' ');
                 break;
             default:
                 if (action.length() == 1){
                     char c = action.charAt(0);
-                    algorithm.removeChar(c);
+                    subImgCharMatcher.removeChar(c);
                 } else if (action.length() == 3 && action.charAt(1) == '-') {
                     char c1 = (char) Math.min((int)action.charAt(0), (int)action.charAt(2));
                     char c2 = (char) Math.max((int)action.charAt(0), (int)action.charAt(2));
                     for (int i = (int)c1; i <= (int) c2 ; i++) {
-                        algorithm.removeChar((char)i);
+                        subImgCharMatcher.removeChar((char)i);
                     }
                 } else {
                     throw new InvalidUserInputException("Did not remove due to incorrect format.");
@@ -234,22 +242,22 @@ public class Shell {
 
         switch (action){
             case "all":
-                for (int i = 32; i < 126; i++) {
-                    algorithm.addChar((char)i);
+                for (int i = 32; i <= 126; i++) {
+                    subImgCharMatcher.addChar((char)i);
                 }
                 break;
             case "space":
-                algorithm.addChar(' ');
+                subImgCharMatcher.addChar(' ');
                 break;
             default:
                 if (action.length() == 1){
                     char c = action.charAt(0);
-                    algorithm.addChar(c);
+                    subImgCharMatcher.addChar(c);
                 } else if (action.length() == 3 && action.charAt(1) == '-') {
                     char c1 = (char) Math.min((int)action.charAt(0), (int)action.charAt(2));
                     char c2 = (char) Math.max((int)action.charAt(0), (int)action.charAt(2));
                     for (int i = (int)c1; i <= (int) c2 ; i++) {
-                        algorithm.addChar((char)i);
+                        subImgCharMatcher.addChar((char)i);
                     }
                 } else {
                     throw new InvalidUserInputException("Did not add due to incorrect format.");
@@ -275,29 +283,25 @@ public class Shell {
             throw new InvalidUserInputException("Did not change resolution due to incorrect format.");
         }
 
-        if (userInput[1].equals("up")){
-            if (2*resolution <= image.getWidth()){
-                algorithm.setResolution(2*resolution);
-                resolution *= 2;
+        if (userInput[1].equals(UP)){
+            if (!algorithm.setResolution(algorithm.getResolution()*2)) {
+                System.out.println(DID_NOT_CHANGE_RESOLUTION_DUE_TO_EXCEEDING_BOUNDARIES);
+            } else{
+                System.out.println("Resolution set to "+algorithm.getResolution()+".");
             }
-            else{
-                System.out.println("Did not change resolution due to exceeding boundaries.");
-            }
-        } else if (userInput[1].equals("down")){
-            if (resolution/2 >= Math.max(1f,(float)image.getWidth()/image.getHeight())){
-                algorithm.setResolution(resolution/2);
-                resolution /= 2;
-            }
-            else{
-                System.out.println("Did not change resolution due to exceeding boundaries.");
+        } else if (userInput[1].equals(DOWN)){
+            if (!algorithm.setResolution(algorithm.getResolution()/2)) {
+                System.out.println(DID_NOT_CHANGE_RESOLUTION_DUE_TO_EXCEEDING_BOUNDARIES);
+            } else{
+                System.out.println("Resolution set to "+algorithm.getResolution()+".");
             }
         } else{
-            throw new InvalidUserInputException("Did not change resolution due to incorrect format.");
+            throw new InvalidUserInputException(DID_NOT_CHANGE_RESOLUTION_DUE_TO_INCORRECT_FORMAT);
         }
     }
 
     private void handleRunCommand(String[] userInput) throws InvalidUserInputException{
-        if (algorithm.getCharSet().size() == 0){
+        if (subImgCharMatcher.getCharSet().size() == 0){
             throw new InvalidUserInputException("Did not execute. Charset is empty.");
         }
 
@@ -309,7 +313,7 @@ public class Shell {
             output.out(returnedImage);
         } else {
             // print to html
-            HtmlAsciiOutput output = new HtmlAsciiOutput("C:\\Users\\t9092556\\IdeaProjects\\oopEx3\\ascii_art\\out.html", "Courier New");
+            HtmlAsciiOutput output = new HtmlAsciiOutput("out.html", "Courier New");
             output.out(returnedImage);
         }
     }
