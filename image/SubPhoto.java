@@ -9,19 +9,18 @@ public class SubPhoto {
 
 
 
-    public SubPhoto(Image image,int resolution,int startRow,int startCol) {
-
-        pixelGreyArray = new double[resolution][resolution];
-        changeToGrey(image, startRow,startCol);
+    public SubPhoto(Image image,int size,int startRow,int startCol) {
+        pixelGreyArray = new double[size][size];
+        changeToGrey(image, size, startRow, startCol);
         setGreyLevel();
     }
 
 
-    private void changeToGrey(Image image,int startRow,int startCol){
-        for (int row = 0; row < image.getWidth(); row++){
-            for (int col = 0; col < image.getHeight(); col++){
+    private void changeToGrey(Image image,int size, int startRow,int startCol){
+        for (int row = startRow; row < startRow+size; row++){
+            for (int col = startCol; col < startCol+size; col++){
                 Color currentPixel = image.getPixel(row,col);
-                pixelGreyArray[row][col] = currentPixel.getRed()*0.2126 +
+                pixelGreyArray[row-startRow][col-startCol] = currentPixel.getRed()*0.2126 +
                         currentPixel.getGreen()*0.7152 +
                         currentPixel.getBlue()*0.0722;
             }
@@ -38,7 +37,7 @@ public class SubPhoto {
                 sum += pixelGreyArray[row][col];
             }
         }
-        greyLevel = sum/MAX_RGB;
+        greyLevel = sum/(MAX_RGB* pixelGreyArray.length*pixelGreyArray[0].length);
     }
 
     /**

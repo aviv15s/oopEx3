@@ -5,9 +5,10 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class ImageSuitability{
-    private static final Color WHITE_COLOR =Color.WHITE;
+    private static final Color WHITE_COLOR = Color.WHITE;
     private SubPhoto[][] arraySubPhoto;
-
+    public int numPhotosRow;
+    public int numPhotosCol;
     /**
      * Constructor that get image and resoultion and pad the photo seperate to
      * subimages and contains array of SubPhoto.
@@ -17,15 +18,16 @@ public class ImageSuitability{
      */
     public ImageSuitability(Image originalImage,int resolution) throws IOException{
         Image image = setImageRightSizes(originalImage);
-        int numPhotosRow = image.getWidth()/resolution;
-        int numPhotosCol = image.getHeight()/resolution;
+        numPhotosRow = resolution;
+        numPhotosCol = image.getHeight()/(image.getWidth()/resolution);
+        int sizeSquare = image.getWidth()/resolution;
         arraySubPhoto = new SubPhoto[numPhotosRow][numPhotosCol];
         for (int indexRow = 0; indexRow<numPhotosRow; indexRow++){
             for (int indexCol = 0; indexCol<numPhotosCol; indexCol++){
                 arraySubPhoto[indexRow][indexCol] =new SubPhoto(image,
-                        resolution,
-                        numPhotosRow*resolution,
-                        numPhotosCol*resolution);
+                        sizeSquare,
+                        indexRow*sizeSquare,
+                        indexCol*sizeSquare);
             }
         }
     }

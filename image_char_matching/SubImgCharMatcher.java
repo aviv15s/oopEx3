@@ -71,7 +71,7 @@ public class SubImgCharMatcher {
         char matchingChar = ' ';
         for (HashMap.Entry<Character, Float> entry : this.charSet.entrySet()){
             float distance = Math.abs((float)brightness - entry.getValue());
-            if (distance < maxDistance){
+            if (distance <= maxDistance){
                 maxDistance = distance;
                 matchingChar = entry.getKey();
             }
