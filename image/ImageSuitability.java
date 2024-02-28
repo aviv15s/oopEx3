@@ -173,4 +173,8 @@ public class ImageSuitability {
     public int getnumImagesCol() {
         return numImagesCol;
     }
+
+    public double[][] getGreyLevelsSubImages() {
+        return greyLevelsSubImages;
+    }
 }

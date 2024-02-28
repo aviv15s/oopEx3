@@ -12,8 +12,8 @@ import java.io.IOException;
  */
 public class AsciiArtAlgorithm {
     private static final String IOEXCEPTION_MESSAGE = "Did not execute due to problem with image file.\n";
-//    private ImageSuitability imageSuitability;
-//    private SubImgCharMatcher subImgCharMatcher;
+    private ImageSuitability imageSuitability;
+    private SubImgCharMatcher subImgCharMatcher;
     private int resolution;
     private String imageName;
     private char[] charSet;
@@ -24,8 +24,8 @@ public class AsciiArtAlgorithm {
      * @param resolution number of sum-images in each row
      */
     public AsciiArtAlgorithm(int resolution, String imageName, char[] charSet) throws IOException {
-//        this.imageSuitability = new ImageSuitability(new Image(imageName), resolution);
-//        this.subImgCharMatcher = new SubImgCharMatcher(charSet);
+        this.imageSuitability = new ImageSuitability(new Image(imageName), resolution);
+        this.subImgCharMatcher = new SubImgCharMatcher(charSet);
         this.resolution = resolution;
         this.imageName = imageName;
         this.charSet = charSet;
@@ -36,16 +36,15 @@ public class AsciiArtAlgorithm {
      *
      * @return char array representing image
      */
-    public char[][] run() {
+    public char[][] run() throws IOException {
         imageSuitability = new ImageSuitability(new Image(imageName), resolution);
-        ImageSuitability imageSuitability = new ImageSuitability(image, resolution);
-        SubPhoto[][] subPhotoArray = imageSuitability.getArraySubPhoto();
+        subImgCharMatcher = new SubImgCharMatcher(charSet);
         char[][] letters = new char[imageSuitability.getresolution()][imageSuitability.getnumImagesCol()];
+        double[][] greyLevelsSubImages = imageSuitability.getGreyLevelsSubImages();
         for (int indexRow = 0; indexRow < imageSuitability.getresolution(); indexRow++) {
             for (int indexCol = 0; indexCol < imageSuitability.getnumImagesCol(); indexCol++) {
                 letters[indexRow][indexCol] =
-                        subImgCharMatcher.getCharByImageBrightness(
-                                subPhotoArray[indexRow][indexCol].getGreyLevel());
+                        subImgCharMatcher.getCharByImageBrightness(greyLevelsSubImages[indexRow][indexCol]);
             }
         }
         return letters;
@@ -62,16 +61,19 @@ public class AsciiArtAlgorithm {
         return charSet;
     }
 
-    public void setImageName(String imageName) {
+    public void setImageName(String imageName) throws IOException {
         this.imageName = imageName;
+        imageSuitability = new ImageSuitability(new Image(imageName), resolution);
     }
 
     public void setResolution(int resolution) {
         this.resolution = resolution;
+        imageSuitability.setResolution(resolution);
     }
 
     public void setCharSet(char[] charSet) {
         this.charSet = charSet;
+        subImgCharMatcher = new SubImgCharMatcher(charSet);
     }
     //    public static void main(String[] args) {
 //        int resolution = 2;
