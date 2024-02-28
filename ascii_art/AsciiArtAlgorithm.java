@@ -5,6 +5,7 @@ import image.ImageSuitability;
 import image_char_matching.SubImgCharMatcher;
 
 import java.io.IOException;
+import java.util.Set;
 
 /**
  * Class responsible on running the algorithm.
@@ -13,7 +14,6 @@ import java.io.IOException;
 public class AsciiArtAlgorithm {
     private ImageSuitability imageSuitability;
     private SubImgCharMatcher subImgCharMatcher;
-    private char[] charSet;
 
     /**
      * constructor for class
@@ -23,7 +23,6 @@ public class AsciiArtAlgorithm {
     public AsciiArtAlgorithm(int resolution, Image image, char[] charSet) {
         this.imageSuitability = new ImageSuitability(image, resolution);
         this.subImgCharMatcher = new SubImgCharMatcher(charSet);
-        this.charSet = charSet;
     }
 
     /**
@@ -48,8 +47,8 @@ public class AsciiArtAlgorithm {
     public void removeChar(char letter){
         subImgCharMatcher.removeChar(letter);
     }
-    public char[] getCharSet() {
-        return charSet;
+    public Set<Character> getCharSet() {
+        return subImgCharMatcher.getCharSet();
     }
 
     public void setResolution(int resolution) {

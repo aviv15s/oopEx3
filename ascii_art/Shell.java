@@ -5,6 +5,7 @@ import ascii_output.HtmlAsciiOutput;
 import image.Image;
 
 import java.io.IOException;
+import java.util.Set;
 
 public class Shell {
 
@@ -160,10 +161,10 @@ public class Shell {
      * @param userInput
      */
     private void handleCharsCommand(String[] userInput){
-        char[] characters = algorithm.getCharSet();
+        Set<Character> characters = algorithm.getCharSet();
         boolean[] isCharInSet = new boolean[128];
-        for (int i = 0; i < characters.length; i++) {
-            isCharInSet[(int)characters[i]] = true;
+        for (Character c: characters){
+            isCharInSet[(int)c] = true;
         }
         for (int i = 0; i < 128; i++) {
             if (isCharInSet[i]){
@@ -296,7 +297,7 @@ public class Shell {
     }
 
     private void handleRunCommand(String[] userInput) throws InvalidUserInputException{
-        if (algorithm.getCharSet().length == 0){
+        if (algorithm.getCharSet().size() == 0){
             throw new InvalidUserInputException("Did not execute. Charset is empty.");
         }
 

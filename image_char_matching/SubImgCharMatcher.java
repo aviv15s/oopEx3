@@ -1,6 +1,8 @@
 package image_char_matching;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -132,5 +134,9 @@ public class SubImgCharMatcher {
                 entry.setValue(newBrightness);
             }
         }
+    }
+
+    public Set<Character> getCharSet(){
+        return charSet.keySet();
     }
 }
