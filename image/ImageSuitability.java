@@ -24,7 +24,6 @@ public class ImageSuitability {
      *
      * @param originalImage any image
      * @param resolution    which resolution to separates with
-     * @throws IOException exception return
      */
     public ImageSuitability(Image originalImage, int resolution) {
         greyImage = PaddingGreyImage.setgreyImage(PaddingGreyImage.createImageRightSizes(originalImage));
