@@ -1,14 +1,19 @@
 package ascii_art;
 
 import ascii_output.AsciiOutput;
+import image.Image;
+import image.ImageSuitability;
+import image.SubPhoto;
+import image_char_matching.SubImgCharMatcher;
+
+import java.io.IOException;
 
 /**
- * מחלקה זו תהיה אחראית על הרצת
- * האלגוריתם. הפרמטרים עבור ריצת האלגוריתם יתקבלו בבנאי של המחלקה. הריצה תהיה תלויה כמובן
- * בתמונה שנבחרה, ברזולוציה שנבחרה )כמה תווים יהיו בשורה בתוצאה(, וכן בסט התווים שנבחר. הדרך
- * שבה נתונים אלו יתורגמו לפרמטרים של המחלקה תלוי במימוש שלכם לחלקים הקודמים
+ * Class responsible on running the algorithm.
+ * Obviously depends on the image given, resolution, char option.
  */
 public class AsciiArtAlgorithm {
+    private static final String IOEXCEPTION_MESSAGE = "Did not execute due to problem with image file.\n";
 
     /**
      * constructor for class
@@ -24,7 +29,37 @@ public class AsciiArtAlgorithm {
      * @return char array representing image
      */
     public char [][] run(){
-
+        String imageName = "examples/board.jpeg";
+        char[] charSet =new char[]{'m','o'};
+        int resolution = 2;
+        SubImgCharMatcher subImgCharMatcher = new SubImgCharMatcher(charSet);
+        try {
+            Image image = new Image(imageName);
+            ImageSuitability imageSuitability = new ImageSuitability(image,resolution);
+            SubPhoto[][] subPhotoArray = imageSuitability.getArraySubPhoto();
+            char[][] letters = new char[imageSuitability.numPhotosRow][imageSuitability.numPhotosCol];
+            for(int indexRow = 0; indexRow<imageSuitability.numPhotosRow; indexRow++){
+                for (int indexCol = 0; indexCol<imageSuitability.numPhotosCol; indexCol++){
+                    char a = subImgCharMatcher.getCharByImageBrightness(
+                            subPhotoArray[indexRow][indexCol].getGreyLevel());
+                    letters[indexRow][indexCol] =
+                            subImgCharMatcher.getCharByImageBrightness(
+                                    subPhotoArray[indexRow][indexCol].getGreyLevel());
+                }
+            }
+            return letters;
+        }
+        catch (IOException ioException){
+            System.out.println(IOEXCEPTION_MESSAGE);
+        }
+        return new char[1][1];
     }
-
+    public static void main(String[] args) {
+        int resolution = 2;
+        AsciiArtAlgorithm asciiArtAlgorithm = new AsciiArtAlgorithm(resolution);
+        System.out.println(asciiArtAlgorithm.run()[0][1]);
+    }
 }
+
+
+
