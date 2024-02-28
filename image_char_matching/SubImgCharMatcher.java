@@ -9,7 +9,7 @@ import java.util.HashMap;
  */
 public class SubImgCharMatcher {
     private final boolean WHITE_PIXEL = true;
-    private HashMap<Character, Float> charSet;
+    private final HashMap<Character, Float> charSet;
     private float maxUnnormalizedBrightness;
     private float minUnnormalizedBrightness;
 
@@ -41,8 +41,8 @@ public class SubImgCharMatcher {
 
     /**
      * used to calculate the brightness of a single charachter
-     * @param c
-     * @return
+     * @param c character
+     * @return brightness value
      */
     private float calculateCharBrightness(char c){
         boolean[][] pixelArray = CharConverter.convertToBoolArray(c);
