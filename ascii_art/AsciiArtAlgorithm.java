@@ -36,7 +36,9 @@ public class AsciiArtAlgorithm {
      *
      * @return char array representing image
      */
-    public char[][] run(){
+    public char[][] run() throws IOException {
+        imageSuitability = new ImageSuitability(image, resolution);
+        imageSuitability.setResolution(resolution);
         char[][] letters = new char[imageSuitability.getresolution()][imageSuitability.getnumImagesCol()];
         double[][] greyLevelsSubImages = imageSuitability.getGreyLevelsSubImages();
         for (int indexRow = 0; indexRow < imageSuitability.getresolution(); indexRow++) {
@@ -59,14 +61,12 @@ public class AsciiArtAlgorithm {
         return charSet;
     }
 
-    public void setImage(Image image) throws IOException {
+    public void setImage(Image image){
         this.image = image;
-        imageSuitability = new ImageSuitability(image, resolution);
     }
 
     public void setResolution(int resolution) {
         this.resolution = resolution;
-        imageSuitability.setResolution(resolution);
     }
 
     public void addChar(char letter) {
