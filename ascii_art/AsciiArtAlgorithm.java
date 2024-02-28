@@ -20,7 +20,7 @@ public class AsciiArtAlgorithm {
      *
      * @param resolution number of sum-images in each row
      */
-    public AsciiArtAlgorithm(int resolution, Image image, char[] charSet){
+    public AsciiArtAlgorithm(int resolution, Image image, char[] charSet) {
         this.imageSuitability = new ImageSuitability(image, resolution);
         this.subImgCharMatcher = new SubImgCharMatcher(charSet);
         this.charSet = charSet;
