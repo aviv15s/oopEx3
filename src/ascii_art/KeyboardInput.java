@@ -6,7 +6,7 @@ class KeyboardInput
 {
     private static KeyboardInput keyboardInputObject = null;
     private Scanner scanner;
-    
+
     private KeyboardInput()
     {
         this.scanner = new Scanner(System.in);
