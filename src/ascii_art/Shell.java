@@ -47,11 +47,6 @@ public class Shell {
         subImgCharMatcher = new SubImgCharMatcher(defaultCharacters);
         algorithm = new AsciiArtAlgorithm(resolution, image, subImgCharMatcher); // Todo update me
     }
-
-    public static void main(String[] args){
-        Shell shell = new Shell();
-        shell.run();
-    }
     /**
      * main function of the program
      */
@@ -322,6 +317,11 @@ public class Shell {
         public InvalidUserInputException(String errorMessage){
             super(errorMessage);
         }
+    }
+
+    public static void main(String[] args){
+        Shell shell = new Shell();
+        shell.run();
     }
 
 }
