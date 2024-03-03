@@ -27,9 +27,9 @@ public class AsciiArtAlgorithm {
      * @return char array representing src.image
      */
     public char[][] run() {
-        char[][] letters = new char[imageSuitability.getnumImagesCol()][imageSuitability.getresolution()];
+        char[][] letters = new char[imageSuitability.getnumImagesCol()][imageSuitability.getResolution()];
         double[][] greyLevelsSubImages = imageSuitability.getGrayscaleSubimages();
-        for (int indexRow = 0; indexRow < imageSuitability.getresolution(); indexRow++) {
+        for (int indexRow = 0; indexRow < imageSuitability.getResolution(); indexRow++) {
             for (int indexCol = 0; indexCol < imageSuitability.getnumImagesCol(); indexCol++) {
                 letters[indexCol][indexRow] =
                         subImgCharMatcher.getCharByImageBrightness(greyLevelsSubImages[indexCol][indexRow]);
@@ -39,21 +39,12 @@ public class AsciiArtAlgorithm {
     }
 
     /**
-     * set the resolution to do with
-     * @param newResolution
-     * @return
+     * set the resolution. only updates the value if the input is valid.
+     * @param newResolution new resolution valid to change to
+     * @return true if value is valid, else false
      */
     public boolean setResolution(int newResolution) {
-        if (newResolution == imageSuitability.getResolution()){
-            return true;
-        }
-        if ((newResolution > imageSuitability.getresolution())||
-                (newResolution < Math.max(1, imageSuitability.getresolution() /
-                        imageSuitability.getCharsInColumn()))) {
-            return true;
-        }
-        imageSuitability.setResolution(newResolution);
-        return true;
+        return imageSuitability.setResolution(newResolution);
     }
 
     /**

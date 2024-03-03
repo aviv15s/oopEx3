@@ -177,13 +177,13 @@ public class Shell {
      * @throws InvalidUserInputException in case of wrong use of command
      */
     private void handleOutputCommand(String[] userInput) throws InvalidUserInputException{
-        if (userInput.length != 2){
+        if (userInput.length != VALID_COMMAND_LENGTH){
             throw new InvalidUserInputException(DID_NOT_CHANGE_OUTPUT_METHOD_DUE_TO_INCORRECT_FORMAT);
         }
 
-        if (userInput[1].equals(HTML)){
+        if (userInput[COMMAND_ARGUMENT_INDEX].equals(CONSOLE)){
             outputMethod = new ConsoleAsciiOutput();
-        } else if (userInput[1].equals(CONSOLE)) {
+        } else if (userInput[COMMAND_ARGUMENT_INDEX].equals(HTML)) {
             outputMethod = new HtmlAsciiOutput(DEFAULT_OUTPUT_FILE_PATH, FONT);
         } else {
             throw new InvalidUserInputException(DID_NOT_CHANGE_OUTPUT_METHOD_DUE_TO_INCORRECT_FORMAT);
@@ -337,7 +337,7 @@ public class Shell {
      * @throws InvalidUserInputException in case of incorrect use
      */
     private void handleResCommand(String[] userInput) throws InvalidUserInputException{
-        if (userInput.length != 2)
+        if (userInput.length != VALID_COMMAND_LENGTH)
         {
             throw new InvalidUserInputException("Did not change resolution due to incorrect format.");
         }
@@ -348,7 +348,7 @@ public class Shell {
             } else{
                 System.out.println(RESOLUTION_SET_TO +algorithm.getResolution()+".");
             }
-        } else if (userInput[1].equals(RES_DOWN)){
+        } else if (userInput[COMMAND_ARGUMENT_INDEX].equals(RES_DOWN)){
             if (!algorithm.setResolution(algorithm.getResolution()/2)) {
                 System.out.println(DID_NOT_CHANGE_RESOLUTION_DUE_TO_EXCEEDING_BOUNDARIES);
             } else{

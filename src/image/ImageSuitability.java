@@ -37,14 +37,27 @@ public class ImageSuitability {
      * Sets a new resolution for the ImageSuitability instance.
      * If the new resolution differs from the current one, it recalculates the sizeSquare,
      * numImagesCol, and updates the greyLevelsSubImages array accordingly.
+     * only updates if the value is valid
      *
      * @param newResolution The new resolution to be set.
+     * @return true if value is valid, else false
      */
-    public void setResolution(int newResolution) {
+    public boolean setResolution(int newResolution) {
+        if (newResolution == resolution){
+            return true;
+        }
+        if ((newResolution > greyImage[0].length) ||
+                (newResolution < Math.max(1, greyImage[0].length /
+                        greyImage.length))) {
+            return false;
+        }
+
         resolution = newResolution;
         pixelsInChar = greyImage[0].length / resolution;
         charsInColumn = greyImage.length / pixelsInChar;
         setGreyLevelsSubImages();
+
+        return true;
     }
 
     /**
@@ -85,15 +98,6 @@ public class ImageSuitability {
             }
         }
         return sum / (MAX_RGB * pixelsInChar * pixelsInChar);
-    }
-
-    /**
-     * get resolution
-     *
-     * @return resolution
-     */
-    public int getresolution() {
-        return resolution;
     }
 
     /**
