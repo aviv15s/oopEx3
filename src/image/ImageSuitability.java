@@ -1,7 +1,6 @@
-package image;
+package src.image;
 
 import java.awt.*;
-import java.io.IOException;
 import java.util.Arrays;
 
 import static java.lang.Math.max;
@@ -12,26 +11,25 @@ import static java.lang.Math.max;
 public class ImageSuitability {
     private static final int MAX_RGB = 255;
     private final double[][] greyImage;
-    private double[][] greyLevelsSubImages;
-    private int sizeSquare;
+    private double[][] grayscaleSubimages;
+    private int pixelsInChar;
     private int resolution;
-    private int numImagesCol;
+    private int charsInColumn;
 
     /**
-     * Constructor that get image and resolution and pad the photo seperates to
+     * Constructor that get src.image and resolution and pad the photo seperates to
      * subimages and contains array of SubPhoto.
      *
-     * @param originalImage any image
+     * @param originalImage any src.image
      * @param resolution    which resolution to separates with
-     * @throws IOException exception return
      */
     public ImageSuitability(Image originalImage, int resolution) {
         greyImage = PaddingGreyImage.setgreyImage(PaddingGreyImage.createImageRightSizes(originalImage));
         this.resolution = resolution;
-        this.sizeSquare = greyImage.length / resolution;
-        this.numImagesCol = greyImage[0].length / sizeSquare;
+        this.pixelsInChar = greyImage[0].length / resolution;
+        this.charsInColumn = greyImage.length / pixelsInChar;
 
-        greyLevelsSubImages = new double[resolution][numImagesCol];
+        grayscaleSubimages = new double[charsInColumn][resolution];
         setGreyLevelsSubImages();
 
     }
@@ -43,14 +41,29 @@ public class ImageSuitability {
      *
      * @param newResolution The new resolution to be set.
      */
-    public void setResolution(int newResolution) {
-        if (newResolution != resolution) {
-            resolution = newResolution;
-            sizeSquare = greyImage.length / resolution;
-            numImagesCol = greyImage[0].length / sizeSquare;
+    public boolean setResolution(int newResolution) {
+        if (newResolution == resolution) {
+            return true;
         }
-        greyLevelsSubImages = new double[resolution][numImagesCol];
+        if (newResolution > greyImage[0].length) {
+            return false;
+        }
+        if (newResolution < Math.max(1, greyImage[0].length / greyImage.length )) {
+            return false;
+        }
+        resolution = newResolution;
+        pixelsInChar = greyImage[0].length / resolution;
+        charsInColumn = greyImage.length / pixelsInChar;
         setGreyLevelsSubImages();
+        return true;
+    }
+
+    /**
+     * Returns the resolution
+     * @return resolution value
+     */
+    public int getResolution(){
+        return resolution;
     }
 
     /**
@@ -59,9 +72,10 @@ public class ImageSuitability {
      * to determine the grey level for each subimage and stores the result in the corresponding array element.
      */
     private void setGreyLevelsSubImages() {
-        for (int indexRow = 0; indexRow < resolution; indexRow++) {
-            for (int indexCol = 0; indexCol < numImagesCol; indexCol++) {
-                greyLevelsSubImages[indexRow][indexCol] = greyLevelCalculatorSubImage(indexRow, indexCol);
+        grayscaleSubimages = new double[charsInColumn][resolution];
+        for (int verticalIndex = 0; verticalIndex < charsInColumn; verticalIndex++) {
+            for (int horizontalIndex = 0; horizontalIndex < resolution; horizontalIndex++) {
+                grayscaleSubimages[verticalIndex][horizontalIndex] = greyLevelCalculatorSubImage(verticalIndex, horizontalIndex);
             }
         }
     }
@@ -69,18 +83,18 @@ public class ImageSuitability {
     /**
      * calculate for specific subImage the greyness
      *
-     * @param indexRow row to start from
-     * @param indexCol col to look from
+     * @param vertical row to start from
+     * @param horizontal col to look from
      * @returngreness of that subImage
      */
-    private double greyLevelCalculatorSubImage(int indexRow, int indexCol) {
+    private double greyLevelCalculatorSubImage(int vertical, int horizontal) {
         double sum = 0;
-        for (int row = 0; row < sizeSquare; row++) {
-            for (int col = 0; col < sizeSquare; col++) {
-                sum += greyImage[row + indexRow * sizeSquare][col + indexCol * sizeSquare];
+        for (int verticalIndex = 0; verticalIndex < pixelsInChar; verticalIndex++) {
+            for (int horizontalIndex = 0; horizontalIndex < pixelsInChar; horizontalIndex++) {
+                sum += greyImage[verticalIndex + vertical * pixelsInChar][horizontalIndex + horizontal * pixelsInChar];
             }
         }
-        return sum / (MAX_RGB * sizeSquare * sizeSquare);
+        return sum / (MAX_RGB * pixelsInChar * pixelsInChar);
     }
 
     /**
@@ -97,8 +111,8 @@ public class ImageSuitability {
      *
      * @return greyLevelsSubImages
      */
-    public double[][] getGreyLevelsSubImages() {
-        return greyLevelsSubImages;
+    public double[][] getGrayscaleSubimages() {
+        return grayscaleSubimages;
     }
 
     /**
@@ -107,7 +121,7 @@ public class ImageSuitability {
      * @return numImagesCol
      */
     public int getnumImagesCol() {
-        return numImagesCol;
+        return charsInColumn;
     }
 
     public static class PaddingGreyImage {
@@ -117,36 +131,39 @@ public class ImageSuitability {
         private static final double GREEN_FACTOR = 0.7152;
 
         /**
-         * Converts a given color image to a grayscale representation.
+         * Converts a given color src.image to a grayscale representation.
          *
-         * @param image The input color image.
-         * @return A 2D array representing the grayscale image.
+         * @param image The input color src.image.
+         * @return A 2D array representing the grayscale src.image.
          */
         public static double[][] setgreyImage(Image image) {
-            double[][] greyImage = new double[image.getWidth()][image.getHeight()];
-            for (int row = 0; row < image.getWidth(); row++) {
-                for (int col = 0; col < image.getHeight(); col++) {
-                    Color currentPixel = image.getPixel(row, col);
-                    greyImage[row][col] = currentPixel.getRed() * RED_FACTOR +
+            double[][] grayImage = new double[image.getHeight()][image.getWidth()];
+            for (int verticalIndex = 0; verticalIndex < image.getHeight(); verticalIndex++) {
+                for (int horizontalIndex = 0; horizontalIndex < image.getWidth(); horizontalIndex++) {
+                    Color currentPixel = image.getPixel(verticalIndex, horizontalIndex);
+                    grayImage[verticalIndex][horizontalIndex] = currentPixel.getRed() * RED_FACTOR +
                             currentPixel.getGreen() * GREEN_FACTOR +
                             currentPixel.getBlue() * BLUE_FACTOR;
                 }
             }
-            return greyImage;
+            return grayImage;
         }
 
         /**
-         * Creates a new image with dimensions adjusted to the nearest power of 2.
-         * Pads the image with the default color if necessary.
+         * Creates a new src.image with dimensions adjusted to the nearest power of 2.
+         * Pads the src.image with the default color if necessary.
          *
-         * @param originalImage The input image to be adjusted.
-         * @return A new image with adjusted dimensions.
+         * @param originalImage The input src.image to be adjusted.
+         * @return A new src.image with adjusted dimensions.
          */
         public static Image createImageRightSizes(Image originalImage) {
             int[] sizes = rightSizes(originalImage.getWidth(), originalImage.getHeight());
             int width = sizes[0];
             int height = sizes[1];
-            Color[][] pixelArray = new Color[width][height];
+            Color[][] pixelArray = new Color[height][width];
+            System.out.println("Dimensions: "+width+"x"+height);
+            System.out.println("Dimensions: "+originalImage.getWidth()+"x"+originalImage.getHeight());
+
             fillingPixelArray(pixelArray,
                     originalImage,
                     width - originalImage.getWidth(),
@@ -156,10 +173,10 @@ public class ImageSuitability {
 
         /**
          * Fills a given pixel array with the default color, then copies the pixels from the
-         * original image to the center of the array.
+         * original src.image to the center of the array.
          *
          * @param pixelArray    The pixel array to be filled and modified.
-         * @param originalImage The original image to copy pixels from.
+         * @param originalImage The original src.image to copy pixels from.
          * @param diffCol       The difference in columns between arrays.
          * @param diffRow       The difference in rows between arrays.
          */

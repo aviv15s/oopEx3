@@ -1,4 +1,4 @@
-package image_char_matching;
+package src.image_char_matching;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
  * described in the blog:
  * https://dzone.com/articles/ascii-art-generator-java
  * Adaptations made by Dan Nirel and again by Rachel Behar.
- * The class converts characters to a binary "image" (2D array of booleans).
+ * The class converts characters to a binary "src.image" (2D array of booleans).
  */
 public class CharConverter {
     private static final double X_OFFSET_FACTOR = 0.2;
@@ -19,7 +19,7 @@ public class CharConverter {
 
     /**
      * Renders a given character, according to how it looks in the font specified in the
-     * constructor, to a square black&white image (2D array of booleans),
+     * constructor, to a square black&white src.image (2D array of booleans),
      * whose dimension in pixels is specified.
      */
     public static boolean[][] convertToBoolArray(char c) {
