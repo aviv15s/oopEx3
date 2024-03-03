@@ -7,6 +7,7 @@ import src.image_char_matching.SubImgCharMatcher;
 /**
  * Class responsible on running the algorithm.
  * Obviously depends on the src.image given, resolution, char option.
+ * @author aviv.shemesh, ram_3108
  */
 public class AsciiArtAlgorithm {
     private ImageSuitability imageSuitability;
