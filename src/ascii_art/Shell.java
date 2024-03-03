@@ -76,11 +76,6 @@ public class Shell {
         algorithm = new AsciiArtAlgorithm(DEFAULT_RESOLUTION, image, subImgCharMatcher);
         outputMethod = new ConsoleAsciiOutput();
     }
-
-    public static void main(String[] args){
-        Shell shell = new Shell();
-        shell.run();
-    }
     /**
      * main function of the program
      */
@@ -349,6 +344,11 @@ public class Shell {
         public InvalidUserInputException(String errorMessage){
             super(errorMessage);
         }
+    }
+
+    public static void main(String[] args){
+        Shell shell = new Shell();
+        shell.run();
     }
 
 }

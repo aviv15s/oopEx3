@@ -21,7 +21,6 @@ public class SubImgCharMatcher {
      */
     public SubImgCharMatcher(char[] charset){
         charSet = new HashMap<Character, Double>();
-
         minUnnormalizedBrightness = 1;
         maxUnnormalizedBrightness = 0;
         for (int i = 0; i < charset.length; i++) {
@@ -35,7 +34,8 @@ public class SubImgCharMatcher {
 
         for (HashMap.Entry<Character, Double> entry : this.charSet.entrySet()) {
             double brightness = entry.getValue();
-            double newBrightness = (brightness - minUnnormalizedBrightness) / (maxUnnormalizedBrightness - minUnnormalizedBrightness);
+            double newBrightness = (brightness - minUnnormalizedBrightness) /
+                    (maxUnnormalizedBrightness - minUnnormalizedBrightness);
             entry.setValue(newBrightness);
         }
 
@@ -99,8 +99,11 @@ public class SubImgCharMatcher {
 
             for (HashMap.Entry<Character, Double> entry : this.charSet.entrySet()) {
                 double brightness = entry.getValue();
-                double unnormalizedCharBrightness = brightness * (maxUnnormalizedBrightness - minUnnormalizedBrightness) + minUnnormalizedBrightness;
-                double newBrightness = (unnormalizedCharBrightness - newMinUnnormalizedBrightness) / (newMaxUnnormalizedBrightness - newMinUnnormalizedBrightness);
+                double unnormalizedCharBrightness = brightness *
+                        (maxUnnormalizedBrightness - minUnnormalizedBrightness) +
+                        minUnnormalizedBrightness;
+                double newBrightness = (unnormalizedCharBrightness - newMinUnnormalizedBrightness) /
+                        (newMaxUnnormalizedBrightness - newMinUnnormalizedBrightness);
                 entry.setValue(newBrightness);
             }
 
@@ -108,7 +111,8 @@ public class SubImgCharMatcher {
             minUnnormalizedBrightness = Math.min(minUnnormalizedBrightness, charBrightness);
         }
 
-        double normalizedCharBrightness = (charBrightness - minUnnormalizedBrightness) / (maxUnnormalizedBrightness - minUnnormalizedBrightness);
+        double normalizedCharBrightness = (charBrightness - minUnnormalizedBrightness) /
+                (maxUnnormalizedBrightness - minUnnormalizedBrightness);
         this.charSet.put(c, normalizedCharBrightness);
 
     }
@@ -129,7 +133,9 @@ public class SubImgCharMatcher {
             double newMinUnnormalizedBrightness = 1;
             double newMaxUnnormalizedBrightness = 0;
             for (HashMap.Entry<Character, Double> entry : this.charSet.entrySet()) {
-                double unnormalizedBrightness = entry.getValue() * (maxUnnormalizedBrightness - minUnnormalizedBrightness) + minUnnormalizedBrightness;
+                double unnormalizedBrightness = entry.getValue() *
+                        (maxUnnormalizedBrightness - minUnnormalizedBrightness)
+                        + minUnnormalizedBrightness;
                 newMinUnnormalizedBrightness = Math.min(newMinUnnormalizedBrightness, unnormalizedBrightness);
                 newMaxUnnormalizedBrightness = Math.max(newMaxUnnormalizedBrightness, unnormalizedBrightness);
             }
@@ -138,12 +144,17 @@ public class SubImgCharMatcher {
 
             for (HashMap.Entry<Character, Double> entry : this.charSet.entrySet()) {
                 double brightness = entry.getValue();
-                double newBrightness = (brightness - minUnnormalizedBrightness) / (maxUnnormalizedBrightness - minUnnormalizedBrightness);
+                double newBrightness = (brightness - minUnnormalizedBrightness) /
+                        (maxUnnormalizedBrightness - minUnnormalizedBrightness);
                 entry.setValue(newBrightness);
             }
         }
     }
 
+    /**
+     *get charSet keys
+     * @return charSet keys
+     */
     public Set<Character> getCharSet(){
         return charSet.keySet();
     }

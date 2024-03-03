@@ -28,7 +28,6 @@ public class ImageSuitability {
         this.resolution = resolution;
         this.pixelsInChar = greyImage[0].length / resolution;
         this.charsInColumn = greyImage.length / pixelsInChar;
-
         grayscaleSubimages = new double[charsInColumn][resolution];
         setGreyLevelsSubImages();
 
@@ -41,28 +40,19 @@ public class ImageSuitability {
      *
      * @param newResolution The new resolution to be set.
      */
-    public boolean setResolution(int newResolution) {
-        if (newResolution == resolution) {
-            return true;
-        }
-        if (newResolution > greyImage[0].length) {
-            return false;
-        }
-        if (newResolution < Math.max(1, greyImage[0].length / greyImage.length )) {
-            return false;
-        }
+    public void setResolution(int newResolution) {
         resolution = newResolution;
         pixelsInChar = greyImage[0].length / resolution;
         charsInColumn = greyImage.length / pixelsInChar;
         setGreyLevelsSubImages();
-        return true;
     }
 
     /**
      * Returns the resolution
+     *
      * @return resolution value
      */
-    public int getResolution(){
+    public int getResolution() {
         return resolution;
     }
 
@@ -83,7 +73,7 @@ public class ImageSuitability {
     /**
      * calculate for specific subImage the greyness
      *
-     * @param vertical row to start from
+     * @param vertical   row to start from
      * @param horizontal col to look from
      * @returngreness of that subImage
      */
@@ -124,6 +114,19 @@ public class ImageSuitability {
         return charsInColumn;
     }
 
+    /**
+     * get num Chars in column
+     *
+     * @return charsInColumn
+     */
+    public int getCharsInColumn() {
+        return charsInColumn;
+    }
+
+    /**
+     * A class the is static because there is no independence
+     * on an instance and help us create our grey array of the image.
+     */
     public static class PaddingGreyImage {
         private static final Color DEFAULT_COLOR = Color.WHITE;
         private static final double RED_FACTOR = 0.2126;
@@ -161,9 +164,6 @@ public class ImageSuitability {
             int width = sizes[0];
             int height = sizes[1];
             Color[][] pixelArray = new Color[height][width];
-            System.out.println("Dimensions: "+width+"x"+height);
-            System.out.println("Dimensions: "+originalImage.getWidth()+"x"+originalImage.getHeight());
-
             fillingPixelArray(pixelArray,
                     originalImage,
                     width - originalImage.getWidth(),
@@ -174,7 +174,6 @@ public class ImageSuitability {
         /**
          * Fills a given pixel array with the default color, then copies the pixels from the
          * original src.image to the center of the array.
-         *
          * @param pixelArray    The pixel array to be filled and modified.
          * @param originalImage The original src.image to copy pixels from.
          * @param diffCol       The difference in columns between arrays.

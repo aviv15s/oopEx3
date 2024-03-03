@@ -16,11 +16,20 @@ public class HtmlAsciiOutput implements AsciiOutput {
     private final String fontName;
     private final String filename;
 
+    /**
+     * defauult constructor
+     * @param filename name of the file to open image from
+     * @param fontName font to use when rendering image from chars.
+     */
     public HtmlAsciiOutput(String filename, String fontName) {
         this.fontName = fontName;
         this.filename = filename;
     }
 
+    /**
+     *
+     * @param chars
+     */
     @Override
     public void out(char[][] chars) {
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
