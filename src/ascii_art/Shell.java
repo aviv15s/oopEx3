@@ -1,17 +1,16 @@
-package src.ascii_art;
-
-import src.ascii_output.AsciiOutput;
-import src.ascii_output.ConsoleAsciiOutput;
-import src.ascii_output.HtmlAsciiOutput;
-import src.image.Image;
-import src.image_char_matching.SubImgCharMatcher;
+package ascii_art;
+import ascii_output.AsciiOutput;
+import ascii_output.ConsoleAsciiOutput;
+import ascii_output.HtmlAsciiOutput;
+import image.Image;
+import image_char_matching.SubImgCharMatcher;
 
 import java.io.IOException;
 import java.util.Set;
 
 /**
  * user interface class
- * @author aviv.shemesh, ram_3108
+ * @author aviv.shemesh, ram3108_
  */
 public class Shell {
     // ERROR MESSAGE STRINGS

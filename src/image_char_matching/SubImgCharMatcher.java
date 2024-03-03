@@ -1,4 +1,4 @@
-package src.image_char_matching;
+package image_char_matching;
 
 import java.util.HashMap;
 import java.util.Set;
@@ -7,7 +7,7 @@ import java.util.Set;
 /**
  * Class that calculates the brightness values of each character and assigns a charachter
  * to a given brightness level
- * @author aviv.shemesh, ram_3108
+ * @author aviv.shemesh, ram3108_
  */
 public class SubImgCharMatcher {
     private static final boolean WHITE_PIXEL = true;

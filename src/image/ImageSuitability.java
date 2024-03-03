@@ -1,13 +1,11 @@
-package src.image;
+package image;
 
 import java.awt.*;
 import java.util.Arrays;
 
-import static java.lang.Math.max;
-
 /**
  * class that helps us control on the grey object comfortably.
- * @author aviv.shemesh, ram_3108
+ * @author aviv.shemesh, ram3108_
  */
 public class ImageSuitability {
     private static final int MAX_RGB = 255;
@@ -79,7 +77,8 @@ public class ImageSuitability {
         grayscaleSubimages = new double[charsInColumn][resolution];
         for (int verticalIndex = 0; verticalIndex < charsInColumn; verticalIndex++) {
             for (int horizontalIndex = 0; horizontalIndex < resolution; horizontalIndex++) {
-                grayscaleSubimages[verticalIndex][horizontalIndex] = greyLevelCalculatorSubImage(verticalIndex, horizontalIndex);
+                grayscaleSubimages[verticalIndex][horizontalIndex] =
+                        greyLevelCalculatorSubImage(verticalIndex, horizontalIndex);
             }
         }
     }
@@ -95,7 +94,8 @@ public class ImageSuitability {
         double sum = 0;
         for (int verticalIndex = 0; verticalIndex < pixelsInChar; verticalIndex++) {
             for (int horizontalIndex = 0; horizontalIndex < pixelsInChar; horizontalIndex++) {
-                sum += greyImage[verticalIndex + vertical * pixelsInChar][horizontalIndex + horizontal * pixelsInChar];
+                sum += greyImage[verticalIndex + vertical * pixelsInChar]
+                        [horizontalIndex + horizontal * pixelsInChar];
             }
         }
         return sum / (MAX_RGB * pixelsInChar * pixelsInChar);
@@ -184,7 +184,8 @@ public class ImageSuitability {
          * @param diffCol       The difference in columns between arrays.
          * @param diffRow       The difference in rows between arrays.
          */
-        private static void fillingPixelArray(Color[][] pixelArray, Image originalImage, int diffCol, int diffRow) {
+        private static void fillingPixelArray(Color[][] pixelArray, Image originalImage,
+                                              int diffCol, int diffRow) {
             for (Color[] e : pixelArray) {
                 Arrays.fill(e, DEFAULT_COLOR);
             }

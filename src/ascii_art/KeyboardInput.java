@@ -1,4 +1,4 @@
-package src.ascii_art;
+package ascii_art;
 
 import java.util.Scanner;
 

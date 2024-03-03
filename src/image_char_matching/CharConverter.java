@@ -1,4 +1,4 @@
-package src.image_char_matching;
+package image_char_matching;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

@@ -1,4 +1,4 @@
-package src.ascii_output;
+package ascii_output;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

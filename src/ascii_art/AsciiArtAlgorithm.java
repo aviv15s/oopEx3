@@ -1,13 +1,13 @@
-package src.ascii_art;
+package ascii_art;
 
-import src.image.Image;
-import src.image.ImageSuitability;
-import src.image_char_matching.SubImgCharMatcher;
+import image.Image;
+import image.ImageSuitability;
+import image_char_matching.SubImgCharMatcher;
 
 /**
  * Class responsible on running the algorithm.
  * Obviously depends on the src.image given, resolution, char option.
- * @author aviv.shemesh, ram_3108
+ * @author aviv.shemesh, ram3108_
  */
 public class AsciiArtAlgorithm {
     private ImageSuitability imageSuitability;

@@ -1,4 +1,4 @@
-package src.ascii_output;
+package ascii_output;
 
 /**
  * An object implementing this interface can output a 2D array of chars

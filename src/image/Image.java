@@ -1,4 +1,4 @@
-package src.image;
+package image;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
