@@ -16,6 +16,11 @@ public class Image {
     private final int width;
     private final int height;
 
+    /**
+     * constructro
+     * @param filename file name to open
+     * @throws IOException exception to throw if not legal file
+     */
     public Image(String filename) throws IOException {
         BufferedImage im = ImageIO.read(new File(filename));
         width = im.getWidth();
@@ -30,24 +35,48 @@ public class Image {
         }
     }
 
+    /**
+     * constructor from array
+     * @param pixelArray array to get from the values of the pixels
+     * @param width of the image
+     * @param height of the image
+     */
     public Image(Color[][] pixelArray, int width, int height) {
         this.pixelArray = pixelArray;
         this.width = width;
         this.height = height;
     }
 
+    /**
+     * get image width
+     * @return width image
+     */
     public int getWidth() {
         return width;
     }
 
+    /**
+     * get image height
+     * @return get image
+     */
     public int getHeight() {
         return height;
     }
 
+    /**
+     * get pixels at specipic place
+     * @param x coordinate of pixel in row
+     * @param y coordinate of pixel in col
+     * @return Color value
+     */
     public Color getPixel(int x, int y) {
         return pixelArray[x][y];
     }
 
+    /**
+     * method to save the image to the computer
+     * @param fileName file name to give to the saved file
+     */
     public void saveImage(String fileName){
         // Initialize BufferedImage, assuming Color[][] is already properly populated.
         BufferedImage bufferedImage = new BufferedImage(pixelArray[0].length, pixelArray.length,
