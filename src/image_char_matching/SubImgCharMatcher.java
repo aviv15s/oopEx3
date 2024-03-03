@@ -10,7 +10,10 @@ import java.util.Set;
  * @author aviv.shemesh, ram_3108
  */
 public class SubImgCharMatcher {
-    private final static boolean WHITE_PIXEL = true;
+    private static final boolean WHITE_PIXEL = true;
+    private static final int MAX_BRIGHTNESS_VALUE = 1;
+    private static final int MIN_BRIGHTNESS_VALUE = 0;
+    private static final char DEFAULT_CHAR = ' ';
     private final HashMap<Character, Double> charSet;
     private double maxUnnormalizedBrightness;
     private double minUnnormalizedBrightness;
@@ -21,8 +24,8 @@ public class SubImgCharMatcher {
      */
     public SubImgCharMatcher(char[] charset){
         charSet = new HashMap<Character, Double>();
-        minUnnormalizedBrightness = 1;
-        maxUnnormalizedBrightness = 0;
+        minUnnormalizedBrightness = MAX_BRIGHTNESS_VALUE;
+        maxUnnormalizedBrightness = MIN_BRIGHTNESS_VALUE;
         for (int i = 0; i < charset.length; i++) {
             char c = charset[i];
             double charBrightness = calculateCharBrightness(c);
@@ -67,8 +70,8 @@ public class SubImgCharMatcher {
      * @return a char
      */
     public char getCharByImageBrightness(double brightness){
-        double maxDistance = 1;
-        char matchingChar = ' ';
+        double maxDistance = MAX_BRIGHTNESS_VALUE - MIN_BRIGHTNESS_VALUE;
+        char matchingChar = DEFAULT_CHAR;
         for (HashMap.Entry<Character, Double> entry : this.charSet.entrySet()){
             double distance = Math.abs(brightness - entry.getValue());
             if (distance < maxDistance){
@@ -130,8 +133,8 @@ public class SubImgCharMatcher {
 
         // check if needs to re-normalize all characters
         if (charBrightness == maxUnnormalizedBrightness || charBrightness == minUnnormalizedBrightness){
-            double newMinUnnormalizedBrightness = 1;
-            double newMaxUnnormalizedBrightness = 0;
+            double newMinUnnormalizedBrightness = MAX_BRIGHTNESS_VALUE;
+            double newMaxUnnormalizedBrightness = MIN_BRIGHTNESS_VALUE;
             for (HashMap.Entry<Character, Double> entry : this.charSet.entrySet()) {
                 double unnormalizedBrightness = entry.getValue() *
                         (maxUnnormalizedBrightness - minUnnormalizedBrightness)

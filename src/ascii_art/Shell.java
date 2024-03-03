@@ -26,7 +26,7 @@ public class Shell {
     private static final String DID_NOT_EXECUTE_CHARSET_IS_EMPTY =
             "Did not execute. Charset is empty.";
     private static final String DID_NOT_CHANGE_RESOLUTION_DUE_TO_EXCEEDING_BOUNDARIES =
-            "Did not change resolution due to exceeding boundaries.";//Todo: change into the exception
+            "Did not change resolution due to exceeding boundaries.";
 
 
     // COMMAND KEYWORDS
@@ -63,6 +63,7 @@ public class Shell {
     private static final String FONT = "Courier New";
     private  static final String CONSOLE_USER_INTERACTION_STRING = ">>> ";
     private static final String RESOLUTION_SET_TO = "Resolution set to ";
+    private static final int COMMAND_WITH_NO_ARGUMENT_LENGTH = 1;
 
     // Values
     private AsciiOutput outputMethod;
@@ -95,14 +96,14 @@ public class Shell {
             String[] wordsInUserInput = userInput.split(String.valueOf(SPACE));
             switch (wordsInUserInput[0]){
                 case EXIT_COMMAND:
-                    if (wordsInUserInput.length == 1){
+                    if (wordsInUserInput.length == COMMAND_WITH_NO_ARGUMENT_LENGTH){
                         exitFlag = true;
                     } else{
                         System.out.println(DID_NOT_EXECUTE_DUE_TO_INCORRECT_COMMAND);
                     }
                     break;
                 case CHARS_COMMAND:
-                    if (wordsInUserInput.length == 1){
+                    if (wordsInUserInput.length == COMMAND_WITH_NO_ARGUMENT_LENGTH){
                         handleCharsCommand(wordsInUserInput);
                     } else{
                         System.out.println(DID_NOT_EXECUTE_DUE_TO_INCORRECT_COMMAND);
@@ -148,7 +149,7 @@ public class Shell {
                     }
                     break;
                 case ASCII_ART_COMMAND:
-                    if (wordsInUserInput.length == 1){
+                    if (wordsInUserInput.length == COMMAND_WITH_NO_ARGUMENT_LENGTH){
                         try {
                             handleRunCommand(wordsInUserInput);
                         } catch (InvalidUserInputException e) {
@@ -257,9 +258,12 @@ public class Shell {
                 if (action.length() == COMMAND_ARGUMENT_INDEX){
                     char c = action.charAt(0);
                     subImgCharMatcher.removeChar(c);
-                } else if (action.length() == rangeLength && action.charAt(rangeSymbolArgument) == RANGE_CHAR) {
-                    char c1 = (char) Math.min(action.charAt(firstRangeArgument), action.charAt(secondRangeArgument));
-                    char c2 = (char) Math.max(action.charAt(firstRangeArgument), action.charAt(secondRangeArgument));
+                } else if (action.length() == rangeLength &&
+                        action.charAt(rangeSymbolArgument) == RANGE_CHAR) {
+                    char c1 = (char) Math.min(action.charAt(firstRangeArgument),
+                            action.charAt(secondRangeArgument));
+                    char c2 = (char) Math.max(action.charAt(firstRangeArgument),
+                            action.charAt(secondRangeArgument));
                     for (int i = c1; i <= (int) c2 ; i++) {
                         subImgCharMatcher.removeChar((char) i);
                     }
@@ -305,9 +309,12 @@ public class Shell {
                 if (action.length() == 1){
                     char c = action.charAt(firstRangeArgument);
                     subImgCharMatcher.addChar(c);
-                } else if (action.length() == rangeLength && action.charAt(rangeSymbolArgument) == RANGE_CHAR) {
-                    char c1 = (char) Math.min(action.charAt(firstRangeArgument), action.charAt(secondRangeArgument));
-                    char c2 = (char) Math.max(action.charAt(firstRangeArgument), action.charAt(secondRangeArgument));
+                } else if (action.length() == rangeLength &&
+                        action.charAt(rangeSymbolArgument) == RANGE_CHAR) {
+                    char c1 = (char) Math.min(action.charAt(firstRangeArgument),
+                            action.charAt(secondRangeArgument));
+                    char c2 = (char) Math.max(action.charAt(firstRangeArgument),
+                            action.charAt(secondRangeArgument));
                     for (int i = c1; i <= (int) c2 ; i++) {
                         subImgCharMatcher.addChar((char)i);
                     }
