@@ -24,7 +24,7 @@ public class ImageSuitability {
      * @param resolution    which resolution to separates with
      */
     public ImageSuitability(Image originalImage, int resolution) {
-        greyImage = PaddingGreyImage.setgreyImage(PaddingGreyImage.createImageRightSizes(originalImage));
+        greyImage = PaddingGreyImage.setGreyImage(PaddingGreyImage.createImageRightSizes(originalImage));
         this.resolution = resolution;
         this.pixelsInChar = greyImage[0].length / resolution;
         this.charsInColumn = greyImage.length / pixelsInChar;
@@ -136,7 +136,7 @@ public class ImageSuitability {
          * @param image The input color src.image.
          * @return A 2D array representing the grayscale src.image.
          */
-        public static double[][] setgreyImage(Image image) {
+        public static double[][] setGreyImage(Image image) {
             double[][] grayImage = new double[image.getHeight()][image.getWidth()];
             for (int verticalIndex = 0; verticalIndex < image.getHeight(); verticalIndex++) {
                 for (int horizontalIndex = 0; horizontalIndex < image.getWidth(); horizontalIndex++) {

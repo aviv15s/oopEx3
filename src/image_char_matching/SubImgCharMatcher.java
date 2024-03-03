@@ -10,7 +10,7 @@ import java.util.Set;
  * @author aviv.shemesh, ram_3108
  */
 public class SubImgCharMatcher {
-    private final boolean WHITE_PIXEL = true;
+    private final static boolean WHITE_PIXEL = true;
     private final HashMap<Character, Double> charSet;
     private double maxUnnormalizedBrightness;
     private double minUnnormalizedBrightness;

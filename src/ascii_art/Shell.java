@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class Shell {
 
-    public static final String DID_NOT_CHANGE_RESOLUTION_DUE_TO_EXCEEDING_BOUNDARIES = "Did not change resolution due to exceeding boundaries.";
+    public static final String DID_NOT_CHANGE_RESOLUTION_DUE_TO_EXCEEDING_BOUNDARIES = "Did not change resolution due to exceeding boundaries.";//Todo: change into the exception
     private static final String ADD_COMMAND = "add";
     private static final String OUTPUT_COMMAND = "output";
     private static final String EXIT = "exit";
