@@ -7,6 +7,7 @@ import static java.lang.Math.max;
 
 /**
  * class that helps us control on the grey object comfortably.
+ * @author aviv.shemesh, ram_3108
  */
 public class ImageSuitability {
     private static final int MAX_RGB = 255;

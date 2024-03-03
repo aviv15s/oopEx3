@@ -9,6 +9,10 @@ import src.image_char_matching.SubImgCharMatcher;
 import java.io.IOException;
 import java.util.Set;
 
+/**
+ * user interface class
+ * @author aviv.shemesh, ram_3108
+ */
 public class Shell {
     // ERROR MESSAGE STRINGS
     private static final String DID_NOT_EXECUTE_DUE_TO_INCORRECT_COMMAND =
@@ -166,6 +170,10 @@ public class Shell {
         }
     }
 
+    /**
+     * prints to the console the code-line that requests input from the user
+     * @return user's input
+     */
     private String requestInput(){
         System.out.print(CONSOLE_USER_INTERACTION_STRING);
         return KeyboardInput.readLine();
@@ -368,11 +376,20 @@ public class Shell {
         outputMethod.out(returnedImage);
     }
 
+    /**
+     * represents an exception for when the user's argument for a command is invalid
+     */
+
     private class InvalidUserInputException extends Exception{
         public InvalidUserInputException(String errorMessage){
             super(errorMessage);
         }
     }
+
+    /**
+     * main function
+     * @param args arguments
+     */
 
     public static void main(String[] args){
         Shell shell = new Shell();
