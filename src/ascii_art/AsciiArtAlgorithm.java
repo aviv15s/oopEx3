@@ -24,7 +24,6 @@ public class AsciiArtAlgorithm {
 
     /**
      * runs the algorithm and returns the char array
-     *
      * @return char array representing src.image
      */
     public char[][] run() {
@@ -39,11 +38,28 @@ public class AsciiArtAlgorithm {
         return letters;
     }
 
-
-    public boolean setResolution(int resolution) {
-        return imageSuitability.setResolution(resolution);
+    /**
+     * set the resolution to do with
+     * @param newResolution
+     * @return
+     */
+    public boolean setResolution(int newResolution) {
+        if (newResolution == imageSuitability.getResolution()){
+            return true;
+        }
+        if ((newResolution > imageSuitability.getresolution())||
+                (newResolution < Math.max(1, imageSuitability.getresolution() /
+                        imageSuitability.getCharsInColumn()))) {
+            return true;
+        }
+        imageSuitability.setResolution(newResolution);
+        return true;
     }
 
+    /**
+     * get resolution
+     * @return resolution
+     */
     public int getResolution(){
         return imageSuitability.getResolution();
     }
