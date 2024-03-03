@@ -11,14 +11,22 @@ import java.util.Set;
 
 public class Shell {
     // ERROR MESSAGE STRINGS
-    private static final String DID_NOT_EXECUTE_DUE_TO_INCORRECT_COMMAND = "Did not execute due to incorrect command.";
-    private static final String DID_NOT_CHANGE_RESOLUTION_DUE_TO_INCORRECT_FORMAT = "Did not change resolution due to incorrect format.";
-    private static final String DID_NOT_CHANGE_OUTPUT_METHOD_DUE_TO_INCORRECT_FORMAT = "Did not change output method due to incorrect format.";
-    private static final String DID_NOT_REMOVE_DUE_TO_INCORRECT_FORMAT = "Did not remove due to incorrect format.";
-    private static final String DID_NOT_ADD_DUE_TO_INCORRECT_FORMAT = "Did not add due to incorrect format.";
-    private static final String DID_NOT_EXECUTE_DUE_TO_PROBLEM_WITH_IMAGE_FILE = "Did not execute due to problem with image file.";
-    private static final String DID_NOT_EXECUTE_CHARSET_IS_EMPTY = "Did not execute. Charset is empty.";
-    private static final String DID_NOT_CHANGE_RESOLUTION_DUE_TO_EXCEEDING_BOUNDARIES = "Did not change resolution due to exceeding boundaries.";//Todo: change into the exception
+    private static final String DID_NOT_EXECUTE_DUE_TO_INCORRECT_COMMAND =
+            "Did not execute due to incorrect command.";
+    private static final String DID_NOT_CHANGE_RESOLUTION_DUE_TO_INCORRECT_FORMAT =
+            "Did not change resolution due to incorrect format.";
+    private static final String DID_NOT_CHANGE_OUTPUT_METHOD_DUE_TO_INCORRECT_FORMAT =
+            "Did not change output method due to incorrect format.";
+    private static final String DID_NOT_REMOVE_DUE_TO_INCORRECT_FORMAT =
+            "Did not remove due to incorrect format.";
+    private static final String DID_NOT_ADD_DUE_TO_INCORRECT_FORMAT =
+            "Did not add due to incorrect format.";
+    private static final String DID_NOT_EXECUTE_DUE_TO_PROBLEM_WITH_IMAGE_FILE =
+            "Did not execute due to problem with image file.";
+    private static final String DID_NOT_EXECUTE_CHARSET_IS_EMPTY =
+            "Did not execute. Charset is empty.";
+    private static final String DID_NOT_CHANGE_RESOLUTION_DUE_TO_EXCEEDING_BOUNDARIES =
+            "Did not change resolution due to exceeding boundaries.";//Todo: change into the exception
 
 
     // COMMAND KEYWORDS
@@ -32,7 +40,6 @@ public class Shell {
     private static final String ASCII_ART_COMMAND = "asciiArt";
     private static final String RES_UP = "up";
     private static final String RES_DOWN = "down";
-    private  static final String CONSOLE_USER_INTERACTION_STRING = ">>> ";
     private static final String CONSOLE = "console";
     private static final String HTML = "html";
     private static final String ALL = "all";
@@ -43,7 +50,6 @@ public class Shell {
     private static final char[] DEFAULT_CHARACTER_SET = {'0','1','2','3','4','5','6','7','8','9'};
     private static final String DEFAULT_IMAGE_PATH = "cat.jpeg";
     private static final String DEFAULT_OUTPUT_FILE_PATH = "out.html";
-    private static final String DEFAULT_FONT = "Courier New";
 
 
     // Magic Numbers
@@ -53,10 +59,9 @@ public class Shell {
     private static final int VALID_COMMAND_LENGTH = 2;
     private static final int COMMAND_ARGUMENT_INDEX = 1;
     private static final char RANGE_CHAR = '-';
-    private static final int MINIMUM_CHAR_IN_SET = 32;
-    private static final int MAXIMUM_CHAR_IN_SET = 126;
     private static final char SPACE = ' ';
-
+    private static final String FONT = "Courier New";
+    private  static final String CONSOLE_USER_INTERACTION_STRING = ">>> ";
     private static final String RESOLUTION_SET_TO = "Resolution set to ";
 
     // Values
@@ -97,7 +102,11 @@ public class Shell {
                     }
                     break;
                 case CHARS_COMMAND:
-                    handleCharsCommand(wordsInUserInput);
+                    if (wordsInUserInput.length == 1){
+                        handleCharsCommand(wordsInUserInput);
+                    } else{
+                        System.out.println(DID_NOT_EXECUTE_DUE_TO_INCORRECT_COMMAND);
+                    }
                     break;
                 case ADD_COMMAND:
                     try {
@@ -139,10 +148,14 @@ public class Shell {
                     }
                     break;
                 case ASCII_ART_COMMAND:
-                    try {
-                        handleRunCommand(wordsInUserInput);
-                    } catch (InvalidUserInputException e) {
-                        System.out.println(e.getMessage());
+                    if (wordsInUserInput.length == 1){
+                        try {
+                            handleRunCommand(wordsInUserInput);
+                        } catch (InvalidUserInputException e) {
+                            System.out.println(e.getMessage());
+                        }
+                    } else{
+                        System.out.println(DID_NOT_EXECUTE_DUE_TO_INCORRECT_COMMAND);
                     }
                     break;
                 default:
@@ -170,7 +183,7 @@ public class Shell {
         if (userInput[1].equals(HTML)){
             outputMethod = new ConsoleAsciiOutput();
         } else if (userInput[1].equals(CONSOLE)) {
-            outputMethod = new HtmlAsciiOutput(DEFAULT_OUTPUT_FILE_PATH, DEFAULT_FONT);
+            outputMethod = new HtmlAsciiOutput(DEFAULT_OUTPUT_FILE_PATH, FONT);
         } else {
             throw new InvalidUserInputException(DID_NOT_CHANGE_OUTPUT_METHOD_DUE_TO_INCORRECT_FORMAT);
         }
@@ -277,7 +290,7 @@ public class Shell {
 
         switch (action){
             case ALL:
-                for (int i = MINIMUM_CHAR_IN_SET; i <= MAXIMUM_CHAR_IN_SET; i++) {
+                for (int i = MIN_CHAR_IN_SET; i <= MAX_CHAR_IN_SET; i++) {
                     subImgCharMatcher.addChar((char) i);
                 }
                 break;
