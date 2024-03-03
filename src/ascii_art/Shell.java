@@ -30,35 +30,38 @@ public class Shell {
     private static final String RES_COMMAND = "res";
     private static final String IMAGE_COMMAND = "image";
     private static final String ASCII_ART_COMMAND = "asciiArt";
-    private static final char SPACE = ' ';
     private static final String RES_UP = "up";
     private static final String RES_DOWN = "down";
+    private  static final String CONSOLE_USER_INTERACTION_STRING = ">>> ";
+    private static final String CONSOLE = "console";
+    private static final String HTML = "html";
+    private static final String ALL = "all";
+    private static final String SPACE1 = "space";
 
+    // Default Values
     private static final int DEFAULT_RESOLUTION = 128;
     private static final char[] DEFAULT_CHARACTER_SET = {'0','1','2','3','4','5','6','7','8','9'};
     private static final String DEFAULT_IMAGE_PATH = "cat.jpeg";
-    private  static final String CONSOLE_USER_INTERACTION_STRING = ">>> ";
     private static final String DEFAULT_OUTPUT_FILE_PATH = "out.html";
     private static final String DEFAULT_FONT = "Courier New";
-    private static final String CONSOLE = "console";
-    private static final String HTML = "html";
+
+
+    // Magic Numbers
     private static final int ASCII_SIZE = 128;
     private static final int MIN_CHAR_IN_SET = 32;
     private static final int MAX_CHAR_IN_SET = 126;
-    private static final String ALL = "all";
-    private static final String SPACE1 = "space";
     private static final int VALID_COMMAND_LENGTH = 2;
     private static final int COMMAND_ARGUMENT_INDEX = 1;
-
     private static final char RANGE_CHAR = '-';
     private static final int MINIMUM_CHAR_IN_SET = 32;
     private static final int MAXIMUM_CHAR_IN_SET = 126;
-    private static final int TWO = 2;
+    private static final char SPACE = ' ';
+
     private static final String RESOLUTION_SET_TO = "Resolution set to ";
+
+    // Values
     private AsciiOutput outputMethod;
     private Image image;
-
-
     private AsciiArtAlgorithm algorithm;
     private final SubImgCharMatcher subImgCharMatcher;
 
@@ -87,7 +90,11 @@ public class Shell {
             String[] wordsInUserInput = userInput.split(String.valueOf(SPACE));
             switch (wordsInUserInput[0]){
                 case EXIT_COMMAND:
-                    exitFlag = true;
+                    if (wordsInUserInput.length == 1){
+                        exitFlag = true;
+                    } else{
+                        System.out.println(DID_NOT_EXECUTE_DUE_TO_INCORRECT_COMMAND);
+                    }
                     break;
                 case CHARS_COMMAND:
                     handleCharsCommand(wordsInUserInput);
@@ -199,7 +206,8 @@ public class Shell {
         }
         for (int i = 0; i < ASCII_SIZE; i++) {
             if (isCharInSet[i]){
-                System.out.print((char) i + SPACE);
+                System.out.print((char) i);
+                System.out.print(SPACE);
             }
         }
         System.out.println();
@@ -315,13 +323,13 @@ public class Shell {
         }
 
         if (userInput[COMMAND_ARGUMENT_INDEX].equals(RES_UP)){
-            if (!algorithm.setResolution(algorithm.getResolution()* TWO)) {
+            if (!algorithm.setResolution(algorithm.getResolution()* 2)) {
                 System.out.println(DID_NOT_CHANGE_RESOLUTION_DUE_TO_EXCEEDING_BOUNDARIES);
             } else{
                 System.out.println(RESOLUTION_SET_TO +algorithm.getResolution()+".");
             }
         } else if (userInput[1].equals(RES_DOWN)){
-            if (!algorithm.setResolution(algorithm.getResolution()/TWO)) {
+            if (!algorithm.setResolution(algorithm.getResolution()/2)) {
                 System.out.println(DID_NOT_CHANGE_RESOLUTION_DUE_TO_EXCEEDING_BOUNDARIES);
             } else{
                 System.out.println(RESOLUTION_SET_TO+algorithm.getResolution()+".");
